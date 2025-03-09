@@ -6,12 +6,15 @@ import 'package:task_app/core_needs/theme_data/my_padding.dart';
 import 'package:task_app/core_needs/theme_data/screens/drawer.dart';
 import 'package:task_app/core_needs/theme_data/theme.dart';
 import 'package:task_app/core_needs/utils/common_functions.dart';
+import 'package:task_app/core_needs/utils/date_formatter.dart';
 import 'package:task_app/core_needs/utils/drop_down_list_items.dart';
+import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/core_needs/widgets/alert_dialog.dart';
 import 'package:task_app/core_needs/widgets/app_bar.dart';
 import 'package:task_app/core_needs/widgets/circle_tile.dart';
 import 'package:task_app/core_needs/widgets/drop_down_form_tile.dart';
 import 'package:task_app/core_needs/widgets/form_tile.dart';
+import 'package:task_app/data/database/repository/task_repository.dart';
 import 'package:task_app/routes/route_constant.dart';
 
 class AddTaskScreen extends StatefulWidget {
@@ -21,8 +24,30 @@ class AddTaskScreen extends StatefulWidget {
   State<AddTaskScreen> createState() => _AddTaskScreenState();
 }
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
-  final GlobalKey<_FormViewState> formViewKey = GlobalKey<_FormViewState>();
+class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  TaskRepository taskRepository = TaskRepository();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  TextEditingController dueDateController = TextEditingController();
+  TextEditingController taskCategoryController = TextEditingController();
+  TextEditingController priorityController = TextEditingController();
+  TextEditingController repeatTaskTypeController = TextEditingController();
+  List<ToggleItem> toggleItems = [
+    ToggleItem(name: UIWordConstant.wSunday, isSelected: false),
+    ToggleItem(name: UIWordConstant.wMonday, isSelected: false),
+    ToggleItem(name: UIWordConstant.wTuesday, isSelected: false),
+    ToggleItem(name: UIWordConstant.wWednesday, isSelected: false),
+    ToggleItem(name: UIWordConstant.wThursday, isSelected: false),
+    ToggleItem(name: UIWordConstant.wFriday, isSelected: false),
+    ToggleItem(name: UIWordConstant.wSaturday, isSelected: false),
+  ];
+  ValueNotifier<String> repeatTaskTypeValueNotifier =
+      ValueNotifier(UIWordConstant.wEveryday);
+
+  bool validate() {
+    return formKey.currentState?.validate() ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +61,49 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
           paddingType: PaddingType.overAllScreen,
         ),
         child: Center(
-          child: _FormView(
-            key: formViewKey,
+          child: SingleChildScrollView(
+            child: Form(
+              key: formKey,
+              child: Column(
+                spacing: SizeGetter.getHeight(
+                  multiplier: MultiplierConstant.dMNotRelatedValueSeparation,
+                ),
+                children: [
+                  FormTile(
+                    title: UIWordConstant.wTitle,
+                    controller: titleController,
+                    isMandatory: true,
+                    validator: validateTitle,
+                  ),
+                  FormTile(
+                    title: UIWordConstant.wDescription,
+                    controller: descriptionController,
+                    textInputAction: TextInputAction.none,
+                    // isLarge: true,
+                  ),
+                  FormTile(
+                    title: UIWordConstant.wDueDate,
+                    controller: dueDateController,
+                    suffixIcon: Icon(
+                      Icons.date_range_outlined,
+                      color: myThemeColor[300],
+                    ),
+                    isDateTimePicker: true,
+                  ),
+                  DropDownFormTile(
+                    title: UIWordConstant.wTaskCategoryType,
+                    dropDownItems: DropDownListItems.taskCategoryType,
+                    controller: taskCategoryController,
+                  ),
+                  DropDownFormTile(
+                    title: UIWordConstant.wPriorityType,
+                    dropDownItems: DropDownListItems.priorityType,
+                    controller: priorityController,
+                  ),
+                  repeatTaskTypeView(),
+                ],
+              ),
+            ),
           ),
         ),
       ),
@@ -68,19 +134,44 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
               style: ElevatedButton.styleFrom(
                 shape: const RoundedRectangleBorder(),
               ),
-              onPressed: () {
-                bool validated = formViewKey.currentState?.validate() ?? false;
+              onPressed: () async {
+                bool validated = validate();
                 if (validated) {
+                  List<int> repeatDays = List.from(
+                    toggleItems.takeWhile(
+                      (toggleItem) => toggleItem.isSelected,
+                    ),
+                  );
+                  TaskModel newTask = TaskModel(
+                    title: titleController.text,
+                    description: descriptionController.text,
+                    dueDate: DateFormatter.parseDate(dueDateController.text),
+                    taskCategory: taskCategoryController.text,
+                    priority: priorityController.text,
+                    repeat: repeatTaskTypeController.text,
+                    repeatList: repeatDays.isEmpty
+                        ? null
+                        : repeatDays, // Example repeating on Monday, Wednesday, Friday
+                  );
+                  var value =
+                      await taskRepository.insertTask(taskModel: newTask);
+                  logger.i("DB VALUE : $value");
+                  if (value) {
+                    showSnackBar(
+                      context: context,
+                      content: MessageWordConstant.mTaskAddedMessage,
+                    );
+                  } else {
+                    showSnackBar(
+                      context: context,
+                      content: MessageWordConstant.mTaskAddedMessage,
+                    );
+                  }
                   Navigator.pushReplacementNamed(
                     context,
                     RouteConstant.rDashBoardScreen,
                   );
-                  showSnackBar(
-                    context: context,
-                    content: MessageWordConstant.mTaskAddedMessage,
-                  );
                 }
-                debugPrint("Save button pressed!");
               },
               child: const Text(
                 UIWordConstant.wSave,
@@ -109,117 +200,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       RouteConstant.rDashBoardScreen,
     );
   }
-}
-
-class _FormView extends StatefulWidget {
-  const _FormView({super.key});
-
-  @override
-  State<_FormView> createState() => _FormViewState();
-}
-
-class _FormViewState extends State<_FormView> with Validators {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController titleController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  TextEditingController dueDateController = TextEditingController();
-  TextEditingController taskCategoryController = TextEditingController();
-  TextEditingController priorityController = TextEditingController();
-  TextEditingController repeatTaskTypeController = TextEditingController();
-  List<ToggleItem> toggleItems = [
-    ToggleItem(
-      name: UIWordConstant.wSunday,
-      isSelected: false,
-    ),
-    ToggleItem(name: UIWordConstant.wMonday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wTuesday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wWednesday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wThursday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wFriday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wSaturday, isSelected: false),
-  ];
-  ValueNotifier<String> repeatTaskTypeValueNotifier =
-      ValueNotifier(UIWordConstant.wEveryday);
-
-  bool validate() {
-    return formKey.currentState?.validate() ?? false;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Form(
-        key: formKey,
-        child: Column(
-          spacing: SizeGetter.getHeight(
-            multiplier: MultiplierConstant.dMNotRelatedValueSeparation,
-          ),
-          children: [
-            FormTile(
-              title: UIWordConstant.wTitle,
-              controller: titleController,
-              isMandatory: true,
-              validator: validateTitle,
-            ),
-            FormTile(
-              title: UIWordConstant.wDescription,
-              controller: descriptionController,
-              textInputAction: TextInputAction.none,
-              // isLarge: true,
-            ),
-            FormTile(
-              title: UIWordConstant.wDueDate,
-              controller: dueDateController,
-              suffixIcon: Icon(
-                Icons.date_range_outlined,
-                color: myThemeColor[300],
-              ),
-              isDateTimePicker: true,
-            ),
-            DropDownFormTile(
-              title: UIWordConstant.wTaskCategoryType,
-              dropDownItems: DropDownListItems.taskCategoryType,
-              controller: taskCategoryController,
-            ),
-            DropDownFormTile(
-              title: UIWordConstant.wPriorityType,
-              dropDownItems: DropDownListItems.priorityType,
-              controller: priorityController,
-            ),
-            repeatTaskTypeView(),
-          ],
-        ),
-      ),
-    );
-  }
 
   Widget repeatTaskTypeView() {
     return ValueListenableBuilder(
       valueListenable: repeatTaskTypeValueNotifier,
       builder: (context, repeatTaskType, child) {
-        print("calledanafjdf0-------------------");
-        // if (repeatTaskType == UIWordConstant.wEveryday) {
-        //   return DropDownFormTile(
-        //     title: UIWordConstant.wRepeat,
-        //     dropDownItems: DropDownListItems.repeatType,
-        //     controller: repeatTaskTypeController,
-        //     initialIndexValue: 0,
-        //   );
-        // } else if (repeatTaskType == UIWordConstant.wWeekly) {
-        //   return DropDownFormTile(
-        //     title: UIWordConstant.wRepeat,
-        //     dropDownItems: DropDownListItems.repeatType,
-        //     controller: repeatTaskTypeController,
-        //     initialIndexValue: 1,
-        //   );
-        // } else if (repeatTaskType == UIWordConstant.wMonthly) {
-        //   return DropDownFormTile(
-        //     title: UIWordConstant.wRepeat,
-        //     dropDownItems: DropDownListItems.repeatType,
-        //     controller: repeatTaskTypeController,
-        //     initialIndexValue: 2,
-        //   );
-        // }
         if (repeatTaskType != UIWordConstant.wCustom) {
           return DropDownFormTile(
             title: UIWordConstant.wRepeat,

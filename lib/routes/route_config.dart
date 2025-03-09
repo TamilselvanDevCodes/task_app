@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/routes/route_constant.dart';
-import 'package:task_app/screens/add_task/add_task_screen.dart';
+import 'package:task_app/screens/add_task/view/add_task_screen.dart';
 import 'package:task_app/screens/dashboard/dashboard_screen.dart';
 import 'package:task_app/screens/splash/splash_screen.dart';
 

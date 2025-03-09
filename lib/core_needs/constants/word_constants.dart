@@ -45,6 +45,7 @@ sealed class UIWordConstant{
   static const String wDiscard="Discard";
   static const String wExit="Exit";
   static const String wSaveToDrafts="Save to Drafts";
+  static const String wNone="None";
 
 
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_app/core_needs/constants/word_constants.dart';
 import 'package:task_app/core_needs/theme_data/my_padding.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
+import 'package:task_app/core_needs/utils/date_formatter.dart';
 
 class FormTile extends StatefulWidget {
   final String title;
@@ -33,6 +34,19 @@ class FormTile extends StatefulWidget {
 
 class _FormTileState extends State<FormTile> {
   @override
+  void initState() {
+    initialize();
+    super.initState();
+  }
+
+  void initialize() async {
+    if (widget.isDateTimePicker != null && widget.isDateTimePicker!) {
+      DateTime dateTime = DateTime.now();
+      widget.controller.text = DateFormatter.formatDate(dateTime);
+    }
+  }
+
+  @override
   void dispose() {
     widget.controller.dispose();
     super.dispose();
@@ -60,12 +74,13 @@ class _FormTileState extends State<FormTile> {
                 const TextSpan(
                   text: UIWordConstant.wBlankString,
                 ),
-                if(widget.isMandatory!=null&&widget.isMandatory!)TextSpan(
-                  text: UIWordConstant.wMandatory,
-                  style: MyThemeTextStyle.labelMedium().copyWith(
-                    color: Colors.red.shade500,
+                if (widget.isMandatory != null && widget.isMandatory!)
+                  TextSpan(
+                    text: UIWordConstant.wMandatory,
+                    style: MyThemeTextStyle.labelMedium().copyWith(
+                      color: Colors.red.shade500,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -89,30 +104,28 @@ class _FormTileState extends State<FormTile> {
                     ),
                   );
                   if (dateTime != null) {
-                    widget.controller.text =
-                        "${dateTime.day.toString().padLeft(2, '0')}-"
-                        "${dateTime.month.toString().padLeft(2, '0')}-"
-                        "${dateTime.year}";
+                    widget.controller.text = DateFormatter.formatDate(dateTime);
                   }
                 }
               : null,
           maxLines: widget.isLarge != null && widget.isLarge! ? 3 : 1,
           validator: widget.validator,
-          textInputAction: widget.textInputAction??TextInputAction.next,
+          textInputAction: widget.textInputAction ?? TextInputAction.next,
           decoration: InputDecoration(
             counterText: "",
             suffixIcon: widget.suffixIcon ??
                 ValueListenableBuilder<TextEditingValue>(
                   valueListenable: widget.controller,
                   builder: (context, value, child) {
-                    return value.text.length>20
+                    return value.text.length > 20
                         ? IconButton(
-                      onPressed: () {
-                        widget.controller.clear();
-                      },
-                      icon: const Icon(Icons.clear_outlined),
-                    )
-                        : const SizedBox.shrink(); // Ensures layout remains stable
+                            onPressed: () {
+                              widget.controller.clear();
+                            },
+                            icon: const Icon(Icons.clear_outlined),
+                          )
+                        : const SizedBox
+                            .shrink(); // Ensures layout remains stable
                   },
                 ),
             // fillColor: myThemeColor[50],
