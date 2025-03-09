@@ -16,7 +16,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBars.getAppBar(
-        title: WordConstants.wDashboard,
+        title: UIWordConstant.wDashboard,
       ),
       drawer:const MyDrawer(),
 

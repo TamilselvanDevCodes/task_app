@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../main.dart';
 import '../../variables/global_variables.dart';
 import '../theme.dart';
 
@@ -52,6 +53,7 @@ sealed class MyThemeTextStyle {
       overflow: TextOverflow.ellipsis,
       leadingDistribution: TextLeadingDistribution.proportional,
       wordSpacing: MyFontSize.letterSpacing*2,
+      color: isDarkMode?Colors.white:Colors.black,
     );
   }
 

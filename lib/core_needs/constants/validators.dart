@@ -1,3 +1,5 @@
+import 'package:task_app/core_needs/constants/error_word_constants.dart';
+
 mixin Validators {
   String? validateUsername(String? value) {
     // Check if the value is null or empty
@@ -10,6 +12,13 @@ mixin Validators {
       return 'Username must be at least 3 characters long';
     } else if (value.length > 30) {
       return 'Username must not be more than 30 characters';
+    }
+    return null;
+  }
+  String? validateTitle(String? value) {
+    // Check if the value is null or empty
+    if (value == null || value.isEmpty) {
+      return MessageWordConstant.mTitleEmptyMessage;
     }
     return null;
   }

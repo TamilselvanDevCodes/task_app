@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:task_app/core_needs/constants/word_constants.dart';
 import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/my_padding.dart';
@@ -20,16 +19,15 @@ class MyDrawer extends StatelessWidget {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          spacing: sizeConstants.sH04,
           children: const [
             _DrawerTile(
-              title: WordConstants.wDashboard,
+              title: UIWordConstant.wDashboard,
               navigationScreenName: RouteConstant.rDashBoardScreen,
               iconData: Icons.dashboard_outlined,
               tileIndex: 0,
             ),
             _DrawerTile(
-              title: WordConstants.wAddTask,
+              title: UIWordConstant.wAddTask,
               navigationScreenName: RouteConstant.rAddTaskScreen,
               iconData: Icons.add_task_outlined,
               tileIndex: 1,
@@ -57,15 +55,13 @@ class _DrawerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      tileColor: currentTileIndex==tileIndex?myThemeColor[600]:myThemeColor[100],
+      tileColor: currentTileIndex==tileIndex?myThemeColor[400]:myThemeColor[50],
       leading: Icon(iconData),
       title: Text(
         title,
       ),
       onTap: () {
-        context.pushReplacement(
-          navigationScreenName,
-        );
+        Navigator.pushReplacementNamed(context, navigationScreenName,);
         currentTileIndex=tileIndex;
       },
     );

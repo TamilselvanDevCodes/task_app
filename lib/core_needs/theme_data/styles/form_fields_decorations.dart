@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
 import '../constants/size_constants.dart';
+import '../my_padding.dart';
 import '../theme.dart';
 import 'border_style.dart';
 
@@ -9,13 +10,12 @@ sealed class MyInputDecorationThemeData{
     return InputDecorationTheme(
       activeIndicatorBorder: MyBorderStyle.getActiveIndicatorBorder(),
       constraints: BoxConstraints(
-        minHeight: sizeConstants.sH1,
         minWidth: sizeConstants.sW05,
         maxHeight: sizeConstants.sH2,
         maxWidth: sizeConstants.sW9,
       ),
       alignLabelWithHint: true,
-      contentPadding: EdgeInsets.all(sizeConstants.sH02),
+      contentPadding:MyPadding.getDimensionEdgeInsets(multiplier: MultiplierConstant.dM02),
       border: MyBorderStyle.getBorder(),
       enabledBorder: MyBorderStyle.getEnabledBorder(),
       disabledBorder: MyBorderStyle.getDisabledBorder(),
@@ -23,8 +23,8 @@ sealed class MyInputDecorationThemeData{
       focusedBorder: MyBorderStyle.getFocusedBorder(),
       focusedErrorBorder: MyBorderStyle.getFocusedErrorBorder(),
       errorMaxLines: 2,
-      filled: true,
-      fillColor: myThemeColor[50],
+      // filled: true,
+      // fillColor: myThemeColor[50],
       errorStyle: MyFormFieldTextStyle.getErrorTextStyle(),
       helperMaxLines: 1,
       floatingLabelStyle: MyFormFieldTextStyle.getFloatingLabelTextStyle(),

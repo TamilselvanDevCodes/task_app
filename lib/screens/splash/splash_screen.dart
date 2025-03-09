@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
 import 'package:task_app/routes/route_constant.dart';
 
@@ -21,8 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
   void navigate()async{
     await Future.delayed(Duration(seconds: 1),);
-    if (mounted) { // ✅ Check if the widget is still mounted
-      context.pushReplacement(RouteConstant.rDashBoardScreen);
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, RouteConstant.rDashBoardScreen);
     }
   }
   @override

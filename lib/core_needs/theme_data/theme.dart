@@ -8,7 +8,7 @@ import 'constants/style_constant.dart';
 import 'my_padding.dart';
 import 'styles/border_style.dart';
 import 'styles/color_getter.dart';
- MaterialColor myThemeColor=Colors.cyan;
+ MaterialColor myThemeColor=Colors.teal;
 
 class MyThemeData {
 
@@ -41,6 +41,18 @@ class MyThemeData {
         color: Colors.grey[300],
         thickness: StyleConstant.thickness,
       ),
+      datePickerTheme: DatePickerThemeData(
+        shadowColor: Colors.grey,
+        elevation: StyleConstant.subElevation,
+        inputDecorationTheme: MyInputDecorationThemeData.getLightMode(),
+        headerBackgroundColor: myThemeColor[100],
+        todayBorder: getBorderSide(),
+        backgroundColor: myThemeColor[50],
+        headerHelpStyle: MyThemeTextStyle.titleLarge(),
+        todayBackgroundColor:WidgetStatePropertyAll(myThemeColor.shade50,),
+        confirmButtonStyle: MyButtonStyle.getElevatedButtonStyle(),
+        cancelButtonStyle: MyButtonStyle.getOutlinedButtonStyle(),
+      ),
       cardTheme: CardTheme(
         color: Colors.grey[600],
         elevation: StyleConstant.subElevation,
@@ -52,8 +64,6 @@ class MyThemeData {
       ),
       drawerTheme: DrawerThemeData(
         elevation: StyleConstant.mainElevation,
-        shadowColor: myThemeColor[800],
-        scrimColor: myThemeColor[400],
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topRight: Radius.circular(MyFontSize.sizeMedium),
@@ -70,47 +80,13 @@ class MyThemeData {
         minLeadingWidth:sizeConstants.sW08,
         minTileHeight: sizeConstants.sH07,
         minVerticalPadding: sizeConstants.sH02,
-        shape: RoundedRectangleBorder(
-          borderRadius: getBorderRadius(),
-        ),
-        selectedTileColor: myThemeColor[800],
         style: ListTileStyle.list,
-        selectedColor: Colors.red,
         tileColor: isDarkMode?myThemeColor[300]:myThemeColor[100],
         titleAlignment: ListTileTitleAlignment.center,
         visualDensity: VisualDensity.compact,
       ),
       outlinedButtonTheme: MyButtonStyle.getOutlinedButtonThemeData(),
-      inputDecorationTheme: InputDecorationTheme(
-        activeIndicatorBorder: MyBorderStyle.getActiveIndicatorBorder(),
-        constraints: BoxConstraints(
-          minHeight: sizeConstants.sH1,
-          minWidth: sizeConstants.sW05,
-          maxHeight: sizeConstants.sH2,
-          maxWidth: sizeConstants.sW9,
-        ),
-        alignLabelWithHint: true,
-        contentPadding:MyPadding.getDimensionEdgeInsets(multiplier: MultiplierConstant.dM02),
-        border: MyBorderStyle.getBorder(),
-        enabledBorder: MyBorderStyle.getEnabledBorder(),
-        disabledBorder: MyBorderStyle.getDisabledBorder(),
-        errorBorder: MyBorderStyle.getErrorBorder(),
-        focusedBorder: MyBorderStyle.getFocusedBorder(),
-        focusedErrorBorder: MyBorderStyle.getFocusedErrorBorder(),
-        errorMaxLines: 2,
-        filled: true,
-        fillColor: myThemeColor[50],
-        errorStyle: MyFormFieldTextStyle.getErrorTextStyle(),
-        helperMaxLines: 1,
-        floatingLabelStyle: MyFormFieldTextStyle.getFloatingLabelTextStyle(),
-        helperStyle: MyFormFieldTextStyle.getHelperTextStyle(),
-        hintStyle: MyFormFieldTextStyle.getHintTextStyle(),
-        labelStyle: MyFormFieldTextStyle.getLabelTextStyle(),
-        outlineBorder: MyBorderStyle.getOutlinedBorder(),
-        prefixStyle: MyFormFieldTextStyle.getPrefixTextStyle(),
-        suffixStyle: MyFormFieldTextStyle.getSuffixTextStyle(),
-        counterStyle: MyFormFieldTextStyle.getCounterTextStyle(),
-      ),
+      inputDecorationTheme: MyInputDecorationThemeData.getLightMode(),
       //splashColor: myThemeColor[50],
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: myThemeColor[50],
@@ -158,9 +134,9 @@ class MyThemeData {
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-          actionBackgroundColor: Colors.grey[600],
+          actionBackgroundColor: Colors.grey[300],
           elevation: StyleConstant.subElevation,
-          backgroundColor: Colors.grey[500],
+          backgroundColor: Colors.grey[200],
           closeIconColor: Colors.black87,
           contentTextStyle: MyThemeTextStyle.labelSmall(),
           dismissDirection: DismissDirection.horizontal,
@@ -169,11 +145,6 @@ class MyThemeData {
           insetPadding: MyPadding.getDimensionEdgeInsets(multiplier: MultiplierConstant.dM01),
           behavior: SnackBarBehavior.floating
       ),
-      // iconTheme:IconThemeData(
-      //   applyTextScaling: true,
-      //   size: MyFontSize.sizeMedium,
-      // ),
-
       floatingActionButtonTheme: FloatingActionButtonThemeData(
         shape: RoundedRectangleBorder(borderRadius: getBorderRadius()),
         backgroundColor: myThemeColor[300],
@@ -259,7 +230,7 @@ class MyThemeData {
       ),
       iconButtonTheme: MyButtonStyle.getIconButtonThemeData(),
       actionIconTheme: ActionIconThemeData(
-        drawerButtonIconBuilder: (_) => Icon(Icons.dehaze_rounded),
+        drawerButtonIconBuilder: (_) => const Icon(Icons.dehaze_outlined),
       ),
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: myThemeColor[200],

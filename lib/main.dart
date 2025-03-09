@@ -1,10 +1,12 @@
 import 'package:task_app/routes/route_config.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:task_app/routes/route_constant.dart';
 
 import 'core_needs/theme_data/constants/size_constants.dart';
 import 'core_needs/theme_data/theme.dart';
 import 'core_needs/variables/global_variables.dart';
+
+bool isDarkMode=false;
 
 void main()async{
   demoLog();
@@ -19,7 +21,7 @@ class TaskApp extends StatefulWidget {
 }
 
 class _TaskAppState extends State<TaskApp> with WidgetsBindingObserver{
-  late GoRouter router;
+
   MyThemeData myThemeData=MyThemeData();
 
 
@@ -27,10 +29,7 @@ class _TaskAppState extends State<TaskApp> with WidgetsBindingObserver{
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    initializeParams();
-  }
-  void initializeParams()async{
-    router=await RouteConfig().getRouteConfig();
+
   }
 
   @override
@@ -55,20 +54,13 @@ class _TaskAppState extends State<TaskApp> with WidgetsBindingObserver{
   @override
   Widget build(BuildContext context) {
     sizeConstants.setWidthAndHeight(MediaQuery.of(context).size);
-    return FutureBuilder<GoRouter>(
-      future: RouteConfig().getRouteConfig(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const CircularProgressIndicator(); // Show a loading indicator
-        }
-        return MaterialApp.router(
-          routerConfig: snapshot.data!,
-          theme: myThemeData.getBaseThemeData(isDarkMode: false),
-          darkTheme: myThemeData.getBaseThemeData(isDarkMode: true),
-          themeMode: ThemeMode.light,
-          debugShowCheckedModeBanner: false,
-        );
-      },
+    return MaterialApp(
+      onGenerateRoute: RouteConfig.onGenerateRoute,
+      initialRoute: RouteConstant.rInitialRoute,
+      theme: myThemeData.getBaseThemeData(isDarkMode: isDarkMode),
+      darkTheme: myThemeData.getBaseThemeData(isDarkMode: isDarkMode),
+      themeMode: ThemeMode.light,
+      debugShowCheckedModeBanner: false,
     );
   }
 

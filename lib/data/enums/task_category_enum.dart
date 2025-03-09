@@ -1,3 +1,3 @@
-enum TaskCategoryEnum{
-
+enum TaskCategoryType{
+  immediate,priority,delegate,ignore
 }

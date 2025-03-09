@@ -40,7 +40,7 @@ dependencies:
   http:
   google_fonts:
   equatable:
-  go_router:
+#  go_router:
   connectivity_plus:
   sqflite:
   shared_preferences:

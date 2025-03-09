@@ -1,3 +1,3 @@
-enum PriorityEnum{
+enum PriorityType{
   high,medium,low
 }

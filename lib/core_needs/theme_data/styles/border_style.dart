@@ -71,9 +71,9 @@ sealed class MyBorderStyle {
 
 BorderRadius getBorderRadius() => BorderRadius.circular(MyFontSize.sizeLarge);
 
-BorderSide getBorderSide({required Color color}) {
+BorderSide getBorderSide({Color? color}) {
   return BorderSide(
-    color: color,
+    color: color??myThemeColor,
     width: StyleConstant.thickness,
     style: BorderStyle.solid,
   );
