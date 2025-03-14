@@ -46,13 +46,15 @@ class TaskRepository {
 
 class TaskModel extends DatabaseModel {
   final int? id; // Auto-incremented primary key
-  final String title;
-  final String? description;
-  final DateTime dueDate;
-  final String taskCategory;
-  final String priority;
-  final String repeat;
-  final List<int>? repeatList;
+   String title;
+   String? description;
+   DateTime dueDate;
+   String taskCategory;
+   String priority;
+   String repeat;
+   List<int>? repeatList;
+   String confirmed;
+   String status;
 
   TaskModel({
     this.id, // Nullable since SQLite will auto-generate it
@@ -63,6 +65,8 @@ class TaskModel extends DatabaseModel {
     required this.priority,
     required this.repeat,
     this.repeatList,
+    required this.confirmed,
+    required this.status
   });
 
   @override
@@ -78,6 +82,8 @@ class TaskModel extends DatabaseModel {
       'priority': priority,
       'repeat': repeat,
       'repeatList': repeatList != null ? jsonEncode(repeatList) : null,
+      'status':status,
+      'confirmed':confirmed
       // Convert List<int> to JSON string
     };
   }
@@ -92,6 +98,8 @@ class TaskModel extends DatabaseModel {
       taskCategory: map['taskCategory'] as String,
       priority: map['priority'] as String,
       repeat: map['repeat'] as String,
+      confirmed: map["confirmed"]as String,
+        status: map['status'] as String,
       repeatList: map['repeatList'] != null
           ? List<int>.from(jsonDecode(map['repeatList'] as String))
           : null, // Convert JSON string back to List<int>
@@ -104,5 +112,31 @@ class TaskModel extends DatabaseModel {
   @override
   TaskModel fromMap(Map<String, dynamic> map) {
     return TaskModel.fromMap(map);
+  }
+
+  TaskModel copyWith({
+    int? id,
+    String? title,
+    String? description,
+    DateTime? dueDate,
+    String? taskCategory,
+    String? priority,
+    String? repeat,
+    List<int>? repeatList,
+    String? confirmed,
+    String? status,
+  }) {
+    return TaskModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      dueDate: dueDate ?? this.dueDate,
+      taskCategory: taskCategory ?? this.taskCategory,
+      priority: priority ?? this.priority,
+      repeat: repeat ?? this.repeat,
+      repeatList: repeatList ?? this.repeatList,
+      confirmed: confirmed ?? this.confirmed,
+      status: status ?? this.status,
+    );
   }
 }

@@ -54,11 +54,10 @@ class MyThemeData {
         cancelButtonStyle: MyButtonStyle.getOutlinedButtonStyle(),
       ),
       cardTheme: CardTheme(
-        color: Colors.grey[600],
         elevation: StyleConstant.subElevation,
-        shape: RoundedRectangleBorder(
-          borderRadius: getBorderRadius(),
-        ),
+        // shape: RoundedRectangleBorder(
+        //   borderRadius: getBorderRadius(),
+        // ),
         shadowColor: Colors.grey[200],
         clipBehavior: Clip.hardEdge,
       ),
@@ -146,39 +145,39 @@ class MyThemeData {
           behavior: SnackBarBehavior.floating
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        shape: RoundedRectangleBorder(borderRadius: getBorderRadius()),
+        // shape: RoundedRectangleBorder(borderRadius: getBorderRadius()),
         backgroundColor: myThemeColor[300],
         elevation: StyleConstant.subElevation,
         focusElevation: StyleConstant.mainElevation,
         highlightElevation: StyleConstant.subElevation + 1,
-        largeSizeConstraints: BoxConstraints(
-          minHeight: sizeConstants.sH1,
-          minWidth: sizeConstants.sW2,
-          maxHeight: sizeConstants.sH1 + sizeConstants.sH04,
-          maxWidth: sizeConstants.sW4,
-        ),
+        // largeSizeConstraints: BoxConstraints(
+        //   minHeight: sizeConstants.sH1,
+        //   minWidth: sizeConstants.sW2,
+        //   maxHeight: sizeConstants.sH1 + sizeConstants.sH04,
+        //   maxWidth: sizeConstants.sW4,
+        // ),
         extendedIconLabelSpacing: sizeConstants.sW01,
         extendedPadding: EdgeInsets.all(sizeConstants.sW01),
-        extendedSizeConstraints: BoxConstraints(
-          minHeight: sizeConstants.sH07,
-          minWidth: sizeConstants.sW4,
-          maxHeight: sizeConstants.sH1,
-          maxWidth: sizeConstants.sW9,
-        ),
+        // extendedSizeConstraints: BoxConstraints(
+        //   minHeight: sizeConstants.sH07,
+        //   minWidth: sizeConstants.sW4,
+        //   maxHeight: sizeConstants.sH1,
+        //   maxWidth: sizeConstants.sW9,
+        // ),
         iconSize: sizeConstants.sH03,
         extendedTextStyle: MyThemeTextStyle.titleSmall(),
-        sizeConstraints: BoxConstraints(
-          minHeight: sizeConstants.sH1,
-          minWidth: sizeConstants.sW1,
-          maxHeight: sizeConstants.sH2,
-          maxWidth: sizeConstants.sW2,
-        ),
-        smallSizeConstraints: BoxConstraints(
-          minHeight: sizeConstants.sH05,
-          minWidth: sizeConstants.sW05,
-          maxHeight: sizeConstants.sH07,
-          maxWidth: sizeConstants.sW1 + sizeConstants.sW03,
-        ),
+        // sizeConstraints: BoxConstraints(
+        //   minHeight: sizeConstants.sH1,
+        //   minWidth: sizeConstants.sW1,
+        //   maxHeight: sizeConstants.sH2,
+        //   maxWidth: sizeConstants.sW2,
+        // ),
+        // smallSizeConstraints: BoxConstraints(
+        //   minHeight: sizeConstants.sH05,
+        //   minWidth: sizeConstants.sW05,
+        //   maxHeight: sizeConstants.sH07,
+        //   maxWidth: sizeConstants.sW1 + sizeConstants.sW03,
+        // ),
         splashColor: myThemeColor[900],
       ),
       checkboxTheme: CheckboxThemeData(

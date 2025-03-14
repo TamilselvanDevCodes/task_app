@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyAlertDialog {
-  static void showTwoButtonAlertDialog({
+  static Future<void> showTwoButtonAlertDialog({
     required BuildContext context,
     required String title,
     required String message,
@@ -9,7 +9,7 @@ class MyAlertDialog {
     required String outlinedButtonText,
     void Function()? elevatedButtonOnPressed,
     void Function()? outlinedButtonOnPressed,
-  }) {
+  }) async{
     showDialog(
       context: context,
       builder: (context) {

@@ -1,3 +1,4 @@
+import 'package:task_app/controllers/controller_service.dart';
 import 'package:task_app/routes/route_config.dart';
 import 'package:flutter/material.dart';
 import 'package:task_app/routes/route_constant.dart';
@@ -9,6 +10,8 @@ import 'core_needs/variables/global_variables.dart';
 bool isDarkMode=false;
 
 void main()async{
+  WidgetsFlutterBinding.ensureInitialized();
+  ControllerService().initializeAllControllers();
   demoLog();
   runApp(const TaskApp());
 }
@@ -60,6 +63,8 @@ class _TaskAppState extends State<TaskApp> with WidgetsBindingObserver{
       theme: myThemeData.getBaseThemeData(isDarkMode: isDarkMode),
       darkTheme: myThemeData.getBaseThemeData(isDarkMode: isDarkMode),
       themeMode: ThemeMode.light,
+      navigatorKey: navigatorKey,
+      scaffoldMessengerKey: snackBarKey,
       debugShowCheckedModeBanner: false,
     );
   }

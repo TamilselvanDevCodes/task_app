@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/core_needs/constants/error_word_constants.dart';
+import 'package:task_app/controllers/task_controller.dart';
+import 'package:task_app/core_needs/constants/comparison_constants.dart';
+import 'package:task_app/core_needs/constants/message_word_constants.dart';
 import 'package:task_app/core_needs/constants/validators.dart';
 import 'package:task_app/core_needs/constants/word_constants.dart';
 import 'package:task_app/core_needs/theme_data/my_padding.dart';
@@ -16,7 +18,7 @@ import 'package:task_app/core_needs/widgets/drop_down_form_tile.dart';
 import 'package:task_app/core_needs/widgets/form_tile.dart';
 import 'package:task_app/data/database/repository/task_repository.dart';
 import 'package:task_app/routes/route_constant.dart';
-
+import 'package:get/get.dart';
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
 
@@ -25,8 +27,8 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
+  TaskController taskController=Get.find<TaskController>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TaskRepository taskRepository = TaskRepository();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController dueDateController = TextEditingController();
@@ -55,7 +57,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
       appBar: AppBars.getAppBar(
         title: UIWordConstant.wAddTask,
       ),
-      drawer: const MyDrawer(),
       body: Padding(
         padding: MyPadding.getPaddingFormat(
           paddingType: PaddingType.overAllScreen,
@@ -113,17 +114,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
                   shape: const RoundedRectangleBorder()),
-              onPressed: () {
-                MyAlertDialog.showTwoButtonAlertDialog(
-                  context: context,
-                  title: UIWordConstant.wDiscardChanges,
-                  message: MessageWordConstant.mDiscardContentMessage,
-                  elevatedButtonText: UIWordConstant.wDiscard,
-                  outlinedButtonText: UIWordConstant.wExit,
-                  outlinedButtonOnPressed: onPressedForExitButton,
-                  elevatedButtonOnPressed: onPressedForDiscardButton,
-                );
-              },
+              onPressed:onPressedForOutlinedButton,
               child: const Text(
                 UIWordConstant.wCancel,
               ),
@@ -134,45 +125,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
               style: ElevatedButton.styleFrom(
                 shape: const RoundedRectangleBorder(),
               ),
-              onPressed: () async {
-                bool validated = validate();
-                if (validated) {
-                  List<int> repeatDays = List.from(
-                    toggleItems.takeWhile(
-                      (toggleItem) => toggleItem.isSelected,
-                    ),
-                  );
-                  TaskModel newTask = TaskModel(
-                    title: titleController.text,
-                    description: descriptionController.text,
-                    dueDate: DateFormatter.parseDate(dueDateController.text),
-                    taskCategory: taskCategoryController.text,
-                    priority: priorityController.text,
-                    repeat: repeatTaskTypeController.text,
-                    repeatList: repeatDays.isEmpty
-                        ? null
-                        : repeatDays, // Example repeating on Monday, Wednesday, Friday
-                  );
-                  var value =
-                      await taskRepository.insertTask(taskModel: newTask);
-                  logger.i("DB VALUE : $value");
-                  if (value) {
-                    showSnackBar(
-                      context: context,
-                      content: MessageWordConstant.mTaskAddedMessage,
-                    );
-                  } else {
-                    showSnackBar(
-                      context: context,
-                      content: MessageWordConstant.mTaskAddedMessage,
-                    );
-                  }
-                  Navigator.pushReplacementNamed(
-                    context,
-                    RouteConstant.rDashBoardScreen,
-                  );
-                }
-              },
+              onPressed:onPressedForSaveButton,
               child: const Text(
                 UIWordConstant.wSave,
               ),
@@ -183,21 +136,71 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
     );
   }
 
-  onPressedForDiscardButton() {
-    Navigator.pushReplacementNamed(
-      context,
-      RouteConstant.rDashBoardScreen,
-    );
-    showSnackBar(
-      context: context,
-      content: MessageWordConstant.mDraftSavedMessage,
-    );
+  void onPressedForDiscardButton() async{
+    if(titleController.text.isNotEmpty){
+      List<int> repeatDays = List.from(
+        toggleItems.takeWhile(
+              (toggleItem) => toggleItem.isSelected,
+        ),
+      );
+      TaskModel newTask = TaskModel(
+        title: titleController.text,
+        description: descriptionController.text,
+        dueDate: DateFormatter.parseDate(dueDateController.text),
+        taskCategory: taskCategoryController.text,
+        priority: priorityController.text,
+        confirmed: ComparisonConstant.cNo,
+        status: ComparisonConstant.cPending,
+        repeat: repeatTaskTypeController.text,
+        repeatList: repeatDays.isEmpty
+            ? null
+            : repeatDays,
+      );
+      taskController.insertTask(newTask: newTask);
+    }else{
+      Navigator.pop(context);
+    }
   }
 
-  onPressedForExitButton() {
-    Navigator.pushReplacementNamed(
-      context,
-      RouteConstant.rDashBoardScreen,
+  void onPressedForExitButton() async{
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
+  void onPressedForSaveButton()async{
+    bool validated = validate();
+    if (validated) {
+      List<int> repeatDays = List.from(
+        toggleItems.takeWhile(
+              (toggleItem) => toggleItem.isSelected,
+        ),
+      );
+      TaskModel newTask = TaskModel(
+        title: titleController.text,
+        description: descriptionController.text,
+        dueDate: DateFormatter.parseDate(dueDateController.text),
+        taskCategory: taskCategoryController.text,
+        priority: priorityController.text,
+        confirmed: ComparisonConstant.cYes,
+        status:ComparisonConstant.cPending,
+        repeat: repeatTaskTypeController.text,
+        repeatList: repeatDays.isEmpty
+            ? null
+            : repeatDays, // Example repeating on Monday, Wednesday, Friday
+      );
+      taskController.insertTask(newTask: newTask);
+    }
+  }
+
+  void onPressedForOutlinedButton () {
+    MyAlertDialog.showTwoButtonAlertDialog(
+      context: context,
+      title: UIWordConstant.wDiscardChanges,
+      message: MessageWordConstant.mDiscardContentMessage,
+      elevatedButtonText: UIWordConstant.wDiscard,
+      outlinedButtonText: UIWordConstant.wExit,
+      outlinedButtonOnPressed: onPressedForExitButton,
+      elevatedButtonOnPressed: onPressedForDiscardButton,
     );
   }
 

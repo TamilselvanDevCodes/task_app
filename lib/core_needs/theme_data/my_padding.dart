@@ -103,7 +103,7 @@ sealed class MultiplierConstant {
   ///For Screen Use
   static const double dMOverAllScreen = 0.02;
   static const double dMNotRelatedValueSeparation = 0.03;
-  static const double dMRelatedValueSeparation = 0.005;
+  static const double dMRelatedValueSeparation = 0.01;
   static const double dMCloseRelatedValueSeparation = 0.003;
 }
 

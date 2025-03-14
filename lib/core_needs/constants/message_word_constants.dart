@@ -5,6 +5,7 @@ sealed class MessageWordConstant{
   static const String mTitleEmptyMessage="Title cannot be empty";
   static const String mDraftSavedMessage="Saved to Drafts";
   static const String mDiscardContentMessage="Are you sure you want to discard your changes?\n\nAny unsaved progress will be lost!";
-
-
+  static const String mErrorMessage="Something Went Wrong";
+  static const String mTaskDeleteContentMessage="Are you sure you want to delete this Task?";
+  static const String mTaskDeletedMessage="Task Deleted Successfully";
 }

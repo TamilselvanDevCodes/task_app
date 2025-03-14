@@ -69,7 +69,7 @@ sealed class MyBorderStyle {
   }
 }
 
-BorderRadius getBorderRadius() => BorderRadius.circular(MyFontSize.sizeLarge);
+BorderRadius getBorderRadius() => BorderRadius.circular(MyFontSize.sizeSmall);
 
 BorderSide getBorderSide({Color? color}) {
   return BorderSide(

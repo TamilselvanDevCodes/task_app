@@ -47,6 +47,14 @@ sealed class UIWordConstant{
   static const String wSaveToDrafts="Save to Drafts";
   static const String wNone="None";
 
+  ///TASK LIST
+  static const String wTasks="Tasks";
+  static const String wDaysRemaining="Days remaining";
+  static const String wDueToday="Due today";
+  static const String wTaskIsOverdue="Task is overdue!";
+  static const String wUnknownStatus="Unknown status";
+  static const String wDeleteTask="Delete Task?";
+
 
 
 }

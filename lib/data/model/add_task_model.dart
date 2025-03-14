@@ -9,7 +9,8 @@ class AddTaskModel {
   final DateTime? dueDate;
   final bool? isRepeat;
   final PriorityType? priorityType;
-
+  final String confirmed;
+  final String status;
   AddTaskModel({
     required this.title,
     this.description,
@@ -17,6 +18,8 @@ class AddTaskModel {
     this.dueDate,
     this.isRepeat,
     this.priorityType,
+    required this.confirmed,
+    required this.status,
   });
 
   Map<String, dynamic> toMap() {
@@ -27,6 +30,8 @@ class AddTaskModel {
       'dueDate': dueDate,
       'isRepeat': isRepeat,
       'priorityType': priorityType,
+      'confirmed': confirmed,
+      'status': status,
     };
   }
 
@@ -38,25 +43,10 @@ class AddTaskModel {
       dueDate: map['dueDate'] as DateTime,
       isRepeat: map['isRepeat'] as bool,
       priorityType: map['priorityType'] as PriorityType,
+      confirmed: map['confirmed'] as String,
+      status: map['status'] as String
     );
   }
 
-  AddTaskModel copyWith({
-    final String? title,
-    final String? description,
-    final TaskCategoryType? taskCategoryType,
-    final DateTime? dueDate,
-    final bool? isRepeat,
-    final PriorityType? priorityType,
-  }) {
-    return AddTaskModel(
-      title: title ?? this.title,
-      description: description ?? this.description,
-      taskCategoryType: taskCategoryType ?? this.taskCategoryType,
-      dueDate: dueDate ?? this.dueDate,
-      isRepeat: isRepeat ?? this.isRepeat,
-      priorityType: priorityType ?? this.priorityType,
-    );
-  }
 
 }

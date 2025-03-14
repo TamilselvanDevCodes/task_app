@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/core_needs/constants/error_word_constants.dart';
+import 'package:task_app/core_needs/constants/message_word_constants.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
 
 import '../constants/word_constants.dart';

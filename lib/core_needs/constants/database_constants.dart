@@ -4,7 +4,7 @@ sealed class TableNameConstant{
 
 sealed class CreateTableConstant{
   static const String cTask='''
-  CREATE TABLE ${TableNameConstant.tTask} (
+  CREATE TABLE IF NOT EXISTS ${TableNameConstant.tTask} (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   title TEXT NOT NULL,
   description TEXT,
@@ -12,7 +12,9 @@ sealed class CreateTableConstant{
   taskCategory TEXT NOT NULL,
   priority TEXT NOT NULL,
   repeat TEXT NOT NULL,
-  repeatList TEXT
+  repeatList TEXT,
+  confirmed TEXT,
+  status TEXT
   )
   ''';
 }
