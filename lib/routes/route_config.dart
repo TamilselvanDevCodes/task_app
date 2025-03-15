@@ -13,33 +13,43 @@ class RouteConfig {
       case RouteConstant.rInitialRoute:
         return MaterialPageRoute(
           builder: (_) => const SplashScreen(),
+          settings: settings,
         );
 
       case RouteConstant.rDashBoardScreen:
         return MaterialPageRoute(
           builder: (_) => const DashboardScreen(),
+          settings: settings,
         );
 
       case RouteConstant.rAddTaskScreen:
         return MaterialPageRoute(
           builder: (_) => const AddTaskScreen(),
+          settings: settings,
         );
 
       case RouteConstant.rTaskListScreen:
         return MaterialPageRoute(
           builder: (_) => const TaskListScreen(),
+          settings: settings,
         );
 
       case RouteConstant.rTaskDetailScreen:
         return MaterialPageRoute(
-            builder: (_) => TaskDetailsScreen(
-                  taskModel: settings.arguments as TaskModel?,
-                ));
+          builder: (_) => TaskDetailsScreen(
+            taskModel: settings.arguments as TaskModel?,
+          ),
+          settings: settings,
+        );
 
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(
-            body: Center(child: Text("Page Not Found")),
+            body: Center(
+              child: Text(
+                "Page Not Found",
+              ),
+            ),
           ),
         );
     }

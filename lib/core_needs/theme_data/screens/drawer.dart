@@ -6,8 +6,6 @@ import 'package:task_app/core_needs/theme_data/theme.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/routes/route_constant.dart';
 
-
-
 class MyDrawer extends StatelessWidget {
   const MyDrawer({super.key});
 
@@ -54,22 +52,44 @@ class _DrawerTile extends StatefulWidget {
 }
 
 class _DrawerTileState extends State<_DrawerTile> {
+  Color tileColor = myThemeColor.shade50;
+
+  @override
+  void initState() {
+    initializeParams();
+    super.initState();
+  }
+
+  initializeParams() {
+    String? currentScreenName;
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        currentScreenName = ModalRoute.of(context)?.settings.name;
+        if (currentScreenName != null) {
+          if (currentScreenName == widget.navigationScreenName) {
+            tileColor = myThemeColor.shade400;
+            setState(() {});
+          }
+        }
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    String? currentScreenName;
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      currentScreenName = ModalRoute.of(context)?.settings.name;
-      logger.d("currentScreenName : $currentScreenName");
-    });
-
     return ListTile(
-      tileColor: currentScreenName==widget.navigationScreenName?myThemeColor[400]:myThemeColor[50],
-      leading: Icon(widget.iconData),
+      tileColor: tileColor,
+      leading: Icon(
+        widget.iconData,
+      ),
       title: Text(
         widget.title,
       ),
       onTap: () {
-        Navigator.pushReplacementNamed(context, widget.navigationScreenName,);
+        Navigator.pushReplacementNamed(
+          context,
+          widget.navigationScreenName,
+        );
       },
     );
   }
