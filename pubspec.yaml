@@ -46,6 +46,7 @@ dependencies:
   shared_preferences:
   logger:
   get: ^4.7.2
+  fluttertoast: ^8.2.12
 
 
   # The following adds the Cupertino Icons font to your application.

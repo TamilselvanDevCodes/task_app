@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
+import 'package:task_app/core_needs/utils/common_functions.dart';
 import 'package:task_app/core_needs/utils/date_formatter.dart';
 import 'package:task_app/data/database/repository/task_repository.dart';
 
@@ -123,22 +124,18 @@ class TaskDetailRowView extends StatelessWidget {
       children: [
         SizedBox(
           width: sizeConstants.sW4,
-          child: Expanded(
-            child: Text(
-              heading,
-              style: MyThemeTextStyle.bodyMedium().copyWith(
-                fontWeight: MyFontWeight.title,
-              ),
-              maxLines: 2,
+          child: Text(
+            heading,
+            style: MyThemeTextStyle.bodyMedium().copyWith(
+              fontWeight: MyFontWeight.title,
             ),
+            maxLines: 2,
           ),
         ),
-        Expanded(
-          child: Text(
-            value == null || value!.isEmpty ? "-" : value!,
-            style: MyThemeTextStyle.bodyMedium(),
-            maxLines: 10,
-          ),
+        Text(
+          value == null || value!.isEmpty ? "-" : value!,
+          style: MyThemeTextStyle.bodyMedium(),
+          maxLines: 10,
         ),
       ],
     );
