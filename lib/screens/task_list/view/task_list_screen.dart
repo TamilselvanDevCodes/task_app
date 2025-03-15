@@ -8,6 +8,7 @@ import 'package:task_app/core_needs/theme_data/screens/drawer.dart';
 import 'package:task_app/core_needs/theme_data/styles/border_style.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
 import 'package:task_app/core_needs/utils/date_formatter.dart';
+import 'package:task_app/core_needs/utils/navigation_service.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/core_needs/widgets/alert_dialog.dart';
 import 'package:task_app/core_needs/widgets/app_bar.dart';
@@ -60,7 +61,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                             alignment: Alignment.centerRight,
                             padding: MyPadding.getDimensionEdgeInsets(
                               multiplier:
-                              MultiplierConstant.dMRelatedValueSeparation,
+                                  MultiplierConstant.dMRelatedValueSeparation,
                             ),
                             decoration: BoxDecoration(
                               borderRadius: getBorderRadius(),
@@ -78,14 +79,15 @@ class _TaskListScreenState extends State<TaskListScreen> {
                               context: context,
                               title: UIWordConstant.wDeleteTask,
                               message:
-                              MessageWordConstant.mTaskDeleteContentMessage,
+                                  MessageWordConstant.mTaskDeleteContentMessage,
                               elevatedButtonText: UIWordConstant.wYes,
                               outlinedButtonText: UIWordConstant.wNo,
                               outlinedButtonOnPressed: () {
                                 Navigator.pop(context);
                               },
                               elevatedButtonOnPressed: () {
-                                logger.d("controller.tasks[index].id: ${controller.tasks[index].id}");
+                                logger.d(
+                                    "controller.tasks[index].id: ${controller.tasks[index].id}");
                                 controller.deleteTask(
                                     taskId: controller.tasks[index].id);
                                 confirmDelete = true;
@@ -95,61 +97,69 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
                             return confirmDelete;
                           },
-                          child: Padding(
-                            padding: MyPadding.getDimensionEdgeInsets(
-                              multiplier: MultiplierConstant.dM01,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              spacing: SizeGetter.getHeight(
-                                multiplier: MultiplierConstant
-                                    .dMNotRelatedValueSeparation,
+                          child: GestureDetector(
+                            onTap: () {
+                              NavigationService.pushNamed(
+                                RouteConstant.rTaskDetailScreen,
+                                arguments: controller.tasks[index],
+                              );
+                            },
+                            child: Padding(
+                              padding: MyPadding.getDimensionEdgeInsets(
+                                multiplier: MultiplierConstant.dM01,
                               ),
-                              children: [
-                                Text(
-                                  controller.tasks[index].title,
-                                  style: MyThemeTextStyle.titleMedium(),
-                                  maxLines: 2,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                spacing: SizeGetter.getHeight(
+                                  multiplier: MultiplierConstant
+                                      .dMNotRelatedValueSeparation,
                                 ),
-                                if (controller.tasks[index].description !=
-                                        null &&
-                                    controller.tasks[index].description!
-                                        .trim()
-                                        .isNotEmpty)
+                                children: [
                                   Text(
-                                    controller.tasks[index].description!,
-                                    style: MyThemeTextStyle.bodyLarge(),
+                                    controller.tasks[index].title,
+                                    style: MyThemeTextStyle.titleMedium(),
                                     maxLines: 2,
                                   ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Expanded(
-                                      child: Text.rich(
-                                        TextSpan(
-                                          text: DateFormatter.formatDate(
-                                            controller.tasks[index].dueDate,
-                                          ),
-                                          children: [
-                                            const TextSpan(text: " ("),
-                                            getDayView(
-                                              dueDate: controller
-                                                  .tasks[index].dueDate,
-                                              taskStatus: controller
-                                                  .tasks[index].status,
+                                  if (controller.tasks[index].description !=
+                                          null &&
+                                      controller.tasks[index].description!
+                                          .trim()
+                                          .isNotEmpty)
+                                    Text(
+                                      controller.tasks[index].description!,
+                                      style: MyThemeTextStyle.bodyLarge(),
+                                      maxLines: 2,
+                                    ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text.rich(
+                                          TextSpan(
+                                            text: DateFormatter.formatDate(
+                                              controller.tasks[index].dueDate,
                                             ),
-                                            const TextSpan(text: ")"),
-                                          ],
+                                            children: [
+                                              const TextSpan(text: " ("),
+                                              getDayView(
+                                                dueDate: controller
+                                                    .tasks[index].dueDate,
+                                                taskStatus: controller
+                                                    .tasks[index].status,
+                                              ),
+                                              const TextSpan(text: ")"),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    getTaskStatusTextWidget(
-                                        taskStatus:
-                                            controller.tasks[index].status),
-                                  ],
-                                )
-                              ],
+                                      getTaskStatusTextWidget(
+                                          taskStatus:
+                                              controller.tasks[index].status),
+                                    ],
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ),

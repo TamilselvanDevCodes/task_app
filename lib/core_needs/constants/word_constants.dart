@@ -45,7 +45,7 @@ sealed class UIWordConstant{
   static const String wDiscard="Discard";
   static const String wExit="Exit";
   static const String wSaveToDrafts="Save to Drafts";
-  static const String wNone="None";
+  static const String wOnce="Once";
 
   ///TASK LIST
   static const String wTasks="Tasks";
@@ -55,6 +55,8 @@ sealed class UIWordConstant{
   static const String wUnknownStatus="Unknown status";
   static const String wDeleteTask="Delete Task?";
 
+  ///TASK DETAIL
+  static const String wDetail="Detail";
 
 
 }

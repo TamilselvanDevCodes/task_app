@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:task_app/core_needs/utils/navigation_service.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
@@ -11,12 +10,32 @@ import '../core_needs/utils/common_functions.dart';
 class TaskController extends GetxController{
   final TaskRepository _taskRepository=TaskRepository();
   List<TaskModel> tasks=<TaskModel>[].obs;
+  List<TaskModel> pendingTasks=<TaskModel>[].obs;
+  List<TaskModel> overDueTasks=<TaskModel>[].obs;
+  List<TaskModel> completedTasks=<TaskModel>[].obs;
 
   void getAllTasks()async{
     tasks=await _taskRepository.getAllTasks();
     _sortTasks();
+    _filterTasksByStatus();
     update();
     logger.d("Tasks :$tasks");
+    logger.d("PendingTasks :$pendingTasks");
+    logger.d("OverDueTasks :$overDueTasks");
+    logger.d("CompletedTasks :$completedTasks");
+  }
+  void _filterTasksByStatus(){
+    tasks.map((task){
+      if(task.status==ComparisonConstant.cPending){
+        pendingTasks.add(task);
+      }
+      else if(task.status==ComparisonConstant.cOverdue){
+        overDueTasks.add(task);
+      }
+      else if(task.status==ComparisonConstant.cCompleted){
+        completedTasks.add(task);
+      }
+    });
   }
   void _sortTasks(){
     tasks.sort((a, b) => b.dueDate.compareTo(a.dueDate));

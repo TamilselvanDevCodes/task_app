@@ -41,8 +41,8 @@ class _FormTileState extends State<FormTile> {
 
   void initialize() async {
     if (widget.isDateTimePicker != null && widget.isDateTimePicker!) {
-      DateTime dateTime = DateTime.now();
-      widget.controller.text = DateFormatter.formatDate(dateTime);
+      DateTime nextSunday=DateFormatter.getNextSunday();
+      widget.controller.text = DateFormatter.formatDate(nextSunday);
     }
   }
 
@@ -97,6 +97,7 @@ class _FormTileState extends State<FormTile> {
                   DateTime? dateTime = await showDatePicker(
                     context: context,
                     firstDate: DateTime.now(),
+                    currentDate: DateFormatter.getNextSunday(),
                     lastDate: DateTime.now().add(
                       const Duration(
                         days: 60,

@@ -16,7 +16,7 @@ sealed class DropDownListItems{
     UIWordConstant.wEveryday,
     UIWordConstant.wWeekly,
     UIWordConstant.wMonthly,
-    UIWordConstant.wCustom,
-    UIWordConstant.wNone,
+    // UIWordConstant.wCustom,
+    UIWordConstant.wOnce,
   ];
 }

@@ -163,7 +163,7 @@ class MyFontSize {
     body = mainSize + 10;
     label = mainSize+6;
     letterSpacing = (mainSize * 0.05).floorToDouble(); // Round for better precision
-    MyFontSize.height = (mainSize * 0.07).roundToDouble();
+    MyFontSize.height = (mainSize * 0.1).roundToDouble();
 
     logger.i("Updated Font Sizes: "
         "mainSize: $mainSize, "
@@ -172,50 +172,6 @@ class MyFontSize {
 
   }
 }
-
-//
-// class MyFontSize {
-//   // Singleton instance
-//   static final MyFontSize _instance = MyFontSize._internal();
-//
-//   // Factory constructor returns the singleton instance
-//   factory MyFontSize() => _instance;
-//
-//   // Private internal constructor
-//   MyFontSize._internal();
-//
-//   // Font sizes (Static properties for global access)
-//   static double mainSize = 0.0;
-//   static double sizeSmall = 0.0;
-//   static double sizeMedium = 0.0;
-//   static double sizeLarge = 0.0;
-//   static double headLine = 0.0;
-//   static double title = 0.0;
-//   static double body = 0.0;
-//   static double label = 0.0;
-//   static double letterSpacing = 0.0;
-//   static double height = 0.0;
-//
-//   /// Updates static font size properties
-//   static void updateParams({required double height,required double width}) {
-//     mainSize = height+width;
-//     sizeSmall = mainSize;
-//     sizeMedium = sizeSmall + 10;
-//     sizeLarge = sizeSmall + 20;
-//     headLine = mainSize + 18;
-//     title = mainSize + 12;
-//     body = mainSize + 6;
-//     label = mainSize;
-//     letterSpacing = (mainSize * 0.05).floorToDouble(); // Round for better precision
-//     MyFontSize.height = (mainSize * 0.07).roundToDouble();
-//
-//     logger.i("Updated Font Sizes: "
-//         "mainSize: $mainSize, "
-//         "letterSpacing: $letterSpacing  ,"
-//         "height : ${MyFontSize.height}",);
-//
-//   }
-// }
 
 
 

@@ -1,24 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:task_app/data/database/repository/task_repository.dart';
 import 'package:task_app/routes/route_constant.dart';
 import 'package:task_app/screens/add_task/view/add_task_screen.dart';
 import 'package:task_app/screens/dashboard/dashboard_screen.dart';
 import 'package:task_app/screens/splash/splash_screen.dart';
+import 'package:task_app/screens/task_detail/task_details_screen.dart';
 import 'package:task_app/screens/task_list/view/task_list_screen.dart';
 
 class RouteConfig {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouteConstant.rInitialRoute:
-        return MaterialPageRoute(builder: (_) => const SplashScreen());
+        return MaterialPageRoute(
+          builder: (_) => const SplashScreen(),
+        );
 
       case RouteConstant.rDashBoardScreen:
-        return MaterialPageRoute(builder: (_) => const DashboardScreen());
+        return MaterialPageRoute(
+          builder: (_) => const DashboardScreen(),
+        );
 
       case RouteConstant.rAddTaskScreen:
-        return MaterialPageRoute(builder: (_) => const AddTaskScreen());
+        return MaterialPageRoute(
+          builder: (_) => const AddTaskScreen(),
+        );
 
       case RouteConstant.rTaskListScreen:
-        return MaterialPageRoute(builder: (_) => const TaskListScreen());
+        return MaterialPageRoute(
+          builder: (_) => const TaskListScreen(),
+        );
+
+      case RouteConstant.rTaskDetailScreen:
+        return MaterialPageRoute(
+            builder: (_) => TaskDetailsScreen(
+                  taskModel: settings.arguments as TaskModel?,
+                ));
 
       default:
         return MaterialPageRoute(

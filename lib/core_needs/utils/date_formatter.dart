@@ -1,4 +1,4 @@
-class DateFormatter {
+sealed class DateFormatter {
   /// Converts a "DD-MM-YYYY" formatted string to a DateTime object
   static DateTime parseDate(String dateString) {
     List<String> parts = dateString.split("-");
@@ -15,4 +15,14 @@ class DateFormatter {
         "${dateTime.month.toString().padLeft(2, '0')}-"
         "${dateTime.year}";
   }
+  static DateTime getNextSunday({DateTime? fromDate}) {
+    DateTime date = fromDate ?? DateTime.now();
+    int daysToAdd = DateTime.sunday - date.weekday;
+    if (daysToAdd <= 0) {
+      daysToAdd += 7;
+    }
+    return date.add(Duration(days: daysToAdd));
+  }
+
+
 }
