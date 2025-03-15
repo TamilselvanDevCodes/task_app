@@ -114,7 +114,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
                   shape: const RoundedRectangleBorder()),
-              onPressed:onPressedForOutlinedButton,
+              onPressed:onPressedForCancelButton,
               child: const Text(
                 UIWordConstant.wCancel,
               ),
@@ -157,8 +157,6 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
             : repeatDays,
       );
       taskController.insertTask(newTask: newTask);
-    }else{
-      Navigator.pop(context);
     }
   }
 
@@ -192,16 +190,21 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
     }
   }
 
-  void onPressedForOutlinedButton () {
-    MyAlertDialog.showTwoButtonAlertDialog(
-      context: context,
-      title: UIWordConstant.wDiscardChanges,
-      message: MessageWordConstant.mDiscardContentMessage,
-      elevatedButtonText: UIWordConstant.wDiscard,
-      outlinedButtonText: UIWordConstant.wExit,
-      outlinedButtonOnPressed: onPressedForExitButton,
-      elevatedButtonOnPressed: onPressedForDiscardButton,
-    );
+  void onPressedForCancelButton () {
+    if(titleController.text.isNotEmpty){
+      MyAlertDialog.showTwoButtonAlertDialog(
+        context: context,
+        title: UIWordConstant.wDiscardChanges,
+        message: MessageWordConstant.mDiscardContentMessage,
+        elevatedButtonText: UIWordConstant.wDiscard,
+        outlinedButtonText: UIWordConstant.wExit,
+        outlinedButtonOnPressed: onPressedForExitButton,
+        elevatedButtonOnPressed: onPressedForDiscardButton,
+      );
+    }
+    else{
+    Navigator.pop(context);
+    }
   }
 
   Widget repeatTaskTypeView() {

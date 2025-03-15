@@ -49,133 +49,146 @@ class _TaskListScreenState extends State<TaskListScreen> {
             Expanded(
               child: GetBuilder<TaskController>(
                 builder: (controller) {
-                  return ListView.separated(
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: Dismissible(
-                          key: Key(
-                            controller.tasks[index].hashCode.toString(),
+                  return controller.tasks.isEmpty
+                      ? Center(
+                          child: Text(
+                            MessageWordConstant.mNoTasksAvailableMessage,
+                            style: MyThemeTextStyle.titleLarge(),
+                            maxLines: 4,
                           ),
-                          direction: DismissDirection.endToStart,
-                          background: Container(
-                            alignment: Alignment.centerRight,
-                            padding: MyPadding.getDimensionEdgeInsets(
-                              multiplier:
-                                  MultiplierConstant.dMRelatedValueSeparation,
-                            ),
-                            decoration: BoxDecoration(
-                              borderRadius: getBorderRadius(),
-                              color: Colors.red.shade300,
-                            ),
-                            child: Icon(
-                              Icons.delete,
-                              size: MyFontSize.sizeMedium,
-                              color: Colors.white,
-                            ),
-                          ),
-                          confirmDismiss: (direction) async {
-                            bool confirmDelete = false;
-                            await MyAlertDialog.showTwoButtonAlertDialog(
-                              context: context,
-                              title: UIWordConstant.wDeleteTask,
-                              message:
-                                  MessageWordConstant.mTaskDeleteContentMessage,
-                              elevatedButtonText: UIWordConstant.wYes,
-                              outlinedButtonText: UIWordConstant.wNo,
-                              outlinedButtonOnPressed: () {
-                                Navigator.pop(context);
-                              },
-                              elevatedButtonOnPressed: () {
-                                logger.d(
-                                    "controller.tasks[index].id: ${controller.tasks[index].id}");
-                                controller.deleteTask(
-                                    taskId: controller.tasks[index].id);
-                                confirmDelete = true;
-                                Navigator.pop(context);
-                              },
-                            );
-
-                            return confirmDelete;
-                          },
-                          child: GestureDetector(
-                            onTap: () {
-                              NavigationService.pushNamed(
-                                RouteConstant.rTaskDetailScreen,
-                                arguments: controller.tasks[index],
-                              );
-                            },
-                            child: Padding(
-                              padding: MyPadding.getDimensionEdgeInsets(
-                                multiplier: MultiplierConstant.dM01,
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                spacing: SizeGetter.getHeight(
-                                  multiplier: MultiplierConstant
-                                      .dMNotRelatedValueSeparation,
+                        )
+                      : ListView.separated(
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: Dismissible(
+                                key: Key(
+                                  controller.tasks[index].hashCode.toString(),
                                 ),
-                                children: [
-                                  Text(
-                                    controller.tasks[index].title,
-                                    style: MyThemeTextStyle.titleMedium(),
-                                    maxLines: 2,
+                                direction: DismissDirection.endToStart,
+                                background: Container(
+                                  alignment: Alignment.centerRight,
+                                  padding: MyPadding.getDimensionEdgeInsets(
+                                    multiplier: MultiplierConstant
+                                        .dMRelatedValueSeparation,
                                   ),
-                                  if (controller.tasks[index].description !=
-                                          null &&
-                                      controller.tasks[index].description!
-                                          .trim()
-                                          .isNotEmpty)
-                                    Text(
-                                      controller.tasks[index].description!,
-                                      style: MyThemeTextStyle.bodyLarge(),
-                                      maxLines: 2,
+                                  decoration: BoxDecoration(
+                                    borderRadius: getBorderRadius(),
+                                    color: Colors.red.shade300,
+                                  ),
+                                  child: Icon(
+                                    Icons.delete,
+                                    size: MyFontSize.sizeMedium,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                confirmDismiss: (direction) async {
+                                  bool confirmDelete = false;
+                                  await MyAlertDialog.showTwoButtonAlertDialog(
+                                    context: context,
+                                    title: UIWordConstant.wDeleteTask,
+                                    message: MessageWordConstant
+                                        .mTaskDeleteContentMessage,
+                                    elevatedButtonText: UIWordConstant.wYes,
+                                    outlinedButtonText: UIWordConstant.wNo,
+                                    outlinedButtonOnPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    elevatedButtonOnPressed: () {
+                                      logger.d(
+                                          "controller.tasks[index].id: ${controller.tasks[index].id}");
+                                      controller.deleteTask(
+                                          taskId: controller.tasks[index].id);
+                                      confirmDelete = true;
+                                      Navigator.pop(context);
+                                    },
+                                  );
+
+                                  return confirmDelete;
+                                },
+                                child: GestureDetector(
+                                  onTap: () {
+                                    NavigationService.pushNamed(
+                                      RouteConstant.rTaskDetailScreen,
+                                      arguments: controller.tasks[index],
+                                    );
+                                  },
+                                  child: Padding(
+                                    padding: MyPadding.getDimensionEdgeInsets(
+                                      multiplier: MultiplierConstant.dM01,
                                     ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text.rich(
-                                          TextSpan(
-                                            text: DateFormatter.formatDate(
-                                              controller.tasks[index].dueDate,
-                                            ),
-                                            children: [
-                                              const TextSpan(text: " ("),
-                                              getDayView(
-                                                dueDate: controller
-                                                    .tasks[index].dueDate,
-                                                taskStatus: controller
-                                                    .tasks[index].status,
-                                              ),
-                                              const TextSpan(text: ")"),
-                                            ],
-                                          ),
-                                        ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      spacing: SizeGetter.getHeight(
+                                        multiplier: MultiplierConstant
+                                            .dMNotRelatedValueSeparation,
                                       ),
-                                      getTaskStatusTextWidget(
-                                          taskStatus:
-                                              controller.tasks[index].status),
-                                    ],
-                                  )
-                                ],
+                                      children: [
+                                        Text(
+                                          controller.tasks[index].title,
+                                          style: MyThemeTextStyle.titleMedium(),
+                                          maxLines: 2,
+                                        ),
+                                        if (controller
+                                                    .tasks[index].description !=
+                                                null &&
+                                            controller.tasks[index].description!
+                                                .trim()
+                                                .isNotEmpty)
+                                          Text(
+                                            controller
+                                                .tasks[index].description!,
+                                            style: MyThemeTextStyle.bodyLarge(),
+                                            maxLines: 2,
+                                          ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  text:
+                                                      DateFormatter.formatDate(
+                                                    controller
+                                                        .tasks[index].dueDate,
+                                                  ),
+                                                  children: [
+                                                    const TextSpan(text: " ("),
+                                                    getDayView(
+                                                      dueDate: controller
+                                                          .tasks[index].dueDate,
+                                                      taskStatus: controller
+                                                          .tasks[index].status,
+                                                    ),
+                                                    const TextSpan(text: ")"),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            getTaskStatusTextWidget(
+                                                taskStatus: controller
+                                                    .tasks[index].status),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                    itemCount: controller.tasks.length,
-                    shrinkWrap: true,
-                    separatorBuilder: (BuildContext context, int index) {
-                      return SizedBox(
-                        height: SizeGetter.getHeight(
-                          multiplier:
-                              MultiplierConstant.dMRelatedValueSeparation,
-                        ),
-                      );
-                    },
-                  );
+                            );
+                          },
+                          itemCount: controller.tasks.length,
+                          shrinkWrap: true,
+                          separatorBuilder: (BuildContext context, int index) {
+                            return SizedBox(
+                              height: SizeGetter.getHeight(
+                                multiplier:
+                                    MultiplierConstant.dMRelatedValueSeparation,
+                              ),
+                            );
+                          },
+                        );
                 },
               ),
             ),
