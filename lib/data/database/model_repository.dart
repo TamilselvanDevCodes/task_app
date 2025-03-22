@@ -1,16 +1,7 @@
 import 'database_helper.dart';
-
 import 'dart:async';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:synchronized/synchronized.dart';
-
 import 'database_model.dart';
-
-import 'dart:async';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
-import 'package:synchronized/synchronized.dart';
 
 class ModelRepository<T extends DatabaseModel> {
   final String tableName;

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/core_needs/constants/word_constants.dart';
-import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/my_padding.dart';
 import 'package:task_app/core_needs/theme_data/theme.dart';
-import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/routes/route_constant.dart';
 
 class MyDrawer extends StatelessWidget {

@@ -47,14 +47,12 @@ class NotificationService {
 
   /// Show an immediate notification
   void showNotification({
-    required int id,
-    required String title,
-    required String body,
+   required NotificationPayload notificationPayload,
   }) {
     _flutterLocalNotificationsPlugin.show(
-      id,
-      title,
-      body,
+      notificationPayload.id,
+      notificationPayload.title,
+      notificationPayload.message,
       _getNotificationDetails(),
     );
   }
@@ -63,7 +61,7 @@ class NotificationService {
     required NotificationPayload notificationPayload,
   }) {
     _scheduleNotification(
-      id: 1,
+      id: 2,
       title: notificationPayload.title,
       body: notificationPayload.message,
       payload: jsonEncode(notificationPayload),
@@ -77,11 +75,11 @@ class NotificationService {
     required String body,
     required String payload,
   }) {
-    _flutterLocalNotificationsPlugin.periodicallyShow(
+    _flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
       id,
       title,
       body,
-      RepeatInterval.hourly,
+      Duration(seconds: 1),
       _getNotificationDetails(),
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exact,

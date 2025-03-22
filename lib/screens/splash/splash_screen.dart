@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:task_app/controllers/task_controller.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
 import 'package:task_app/routes/route_constant.dart';
-import 'package:get/get.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -11,12 +9,11 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-TaskController taskController=Get.find();
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      taskController.getAllTasks();
       navigate();
     });
   }

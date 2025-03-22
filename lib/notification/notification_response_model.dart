@@ -1,5 +1,5 @@
 class NotificationPayload {
-  final String id;         // Unique Notification ID
+  final int id;         // Unique Notification ID
   final String taskId;     // Associated Task ID
   final String title;      // Notification Title
   final String message;    // Notification Content

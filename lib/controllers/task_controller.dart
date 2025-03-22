@@ -13,7 +13,9 @@ class TaskController extends GetxController{
   List<TaskModel> pendingTasks=<TaskModel>[].obs;
   List<TaskModel> overDueTasks=<TaskModel>[].obs;
   List<TaskModel> completedTasks=<TaskModel>[].obs;
-
+  TaskController(){
+    getAllTasks();
+  }
   void getAllTasks()async{
     tasks=await _taskRepository.getAllTasks();
     _sortTasks();
