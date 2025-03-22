@@ -15,6 +15,8 @@ import 'package:task_app/core_needs/widgets/drop_down_form_tile.dart';
 import 'package:task_app/core_needs/widgets/form_tile.dart';
 import 'package:task_app/data/database/repository/task_repository.dart';
 import 'package:get/get.dart';
+
+import '../../../data/model/task_model.dart';
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
 

@@ -7,6 +7,8 @@ import 'package:task_app/screens/splash/splash_screen.dart';
 import 'package:task_app/screens/task_detail/task_details_screen.dart';
 import 'package:task_app/screens/task_list/view/task_list_screen.dart';
 
+import '../data/model/task_model.dart';
+
 class RouteConfig {
   static Route<dynamic>? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {

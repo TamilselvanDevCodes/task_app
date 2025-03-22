@@ -4,10 +4,10 @@ import 'package:task_app/controllers/controller_service.dart';
 import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/theme.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
+import 'package:task_app/notification/firebase-notification_service.dart';
 import 'package:task_app/notification/notification_service.dart';
 import 'package:task_app/routes/route_config.dart';
 import 'package:task_app/routes/route_constant.dart';
-
 import 'firebase_options.dart';
 
 bool isDarkMode = false;
@@ -18,8 +18,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  ControllerService().initializeAllControllers();
   NotificationService();
+  await FirebaseNotificationService.init();
+  ControllerService().initializeAllControllers();
   demoLog();
   runApp(const TaskApp());
 }

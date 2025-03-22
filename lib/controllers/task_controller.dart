@@ -6,6 +6,7 @@ import 'package:task_app/data/database/repository/task_repository.dart';
 import '../core_needs/constants/comparison_constants.dart';
 import '../core_needs/constants/message_word_constants.dart';
 import '../core_needs/utils/common_functions.dart';
+import '../data/model/task_model.dart';
 
 class TaskController extends GetxController{
   final TaskRepository _taskRepository=TaskRepository();

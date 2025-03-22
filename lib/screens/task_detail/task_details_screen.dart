@@ -6,6 +6,7 @@ import 'package:task_app/data/database/repository/task_repository.dart';
 import '../../core_needs/constants/word_constants.dart';
 import '../../core_needs/theme_data/my_padding.dart';
 import '../../core_needs/widgets/app_bar.dart';
+import '../../data/model/task_model.dart';
 
 class TaskDetailsScreen extends StatefulWidget {
   final TaskModel? taskModel;
