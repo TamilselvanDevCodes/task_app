@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
 import 'package:task_app/core_needs/utils/date_formatter.dart';
-import 'package:task_app/data/database/repository/task_repository.dart';
 import '../../core_needs/constants/word_constants.dart';
 import '../../core_needs/theme_data/my_padding.dart';
 import '../../core_needs/widgets/app_bar.dart';

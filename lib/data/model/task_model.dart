@@ -1,9 +1,5 @@
 import 'dart:convert';
-
-import 'package:task_app/data/enums/priority_enum.dart';
-
 import '../database/database_model.dart';
-import '../enums/task_category_enum.dart';
 class TaskModel extends DatabaseModel {
   final int? id; // Auto-incremented primary key
   String title;
