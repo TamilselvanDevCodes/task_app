@@ -1,5 +1,6 @@
 sealed class TableNameConstant{
   static const String tTask="task";
+  static const String tNotification="notification";
 }
 
 sealed class CreateTableConstant{
@@ -17,4 +18,16 @@ sealed class CreateTableConstant{
   status TEXT
   )
   ''';
+  static const String cNotification = '''
+CREATE TABLE IF NOT EXISTS ${TableNameConstant.tNotification} (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  taskId INTEGER,
+  title TEXT,
+  message TEXT,
+  timestamp TEXT,
+  taskType TEXT,
+  isRead INTEGER DEFAULT 0
+);
+''';
+
 }

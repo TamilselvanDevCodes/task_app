@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:task_app/controllers/notification_controller.dart';
 import 'package:task_app/controllers/task_controller.dart';
 
 class ControllerService {
@@ -12,6 +13,7 @@ class ControllerService {
 
   void initializeAllControllers(){
     Get.put(TaskController());
+    Get.put(NotificationController());
   }
 
 }

@@ -58,4 +58,9 @@ class ModelRepository<T extends DatabaseModel> {
     final db = await _dbHelper.database;
     return await db.delete(tableName, where: where, whereArgs: whereArgs);
   }
+  Future<int> deleteAll() async {
+    final db = await _dbHelper.database;
+    return await db.delete(tableName);
+  }
+
 }

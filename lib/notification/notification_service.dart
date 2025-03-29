@@ -1,9 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:task_app/controllers/notification_controller.dart';
 
+import '../core_needs/utils/navigation_service.dart';
 import '../core_needs/variables/global_variables.dart';
-import 'notification_response_model.dart';
+import '../data/model/notification_response_model.dart';
+import '../data/model/task_model.dart';
+import 'package:get/get.dart';
+
+import '../routes/route_constant.dart';
 
 class NotificationService {
   static final NotificationService _instance = NotificationService._internal();
@@ -28,8 +34,28 @@ class NotificationService {
 
     await _flutterLocalNotificationsPlugin.initialize(
       initSettings,
-      onDidReceiveNotificationResponse: (NotificationResponse response) {
-        logger.i("Notification Clicked: ${response.payload}");
+      onDidReceiveNotificationResponse: (NotificationResponse response) async{
+        if (response.payload != null) {
+          final Map<String, dynamic> data = jsonDecode(response.payload!);
+          NotificationPayload notification = NotificationPayload.fromJson(data);
+          NotificationController notificationController=Get.find();
+          TaskModel? taskModel =
+              await notificationController.getTaskForNotification(
+            taskId:notification.taskId,
+          );
+          logger.i("Notification Clicked: ${notification.title}");
+          if(taskModel==null){
+            return;
+          }
+          else{
+            NavigationService.pushNamed(
+              RouteConstant.rTaskDetailScreen,
+              arguments: taskModel,
+            );
+          }
+        } else {
+          logger.w("Notification Clicked but payload is null");
+        }
       },
     );
   }
@@ -56,6 +82,7 @@ class NotificationService {
       notificationPayload.id,
       notificationPayload.title,
       notificationPayload.message,
+      payload: jsonEncode(notificationPayload),
       _getNotificationDetails(),
     );
   }

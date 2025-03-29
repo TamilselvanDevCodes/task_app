@@ -58,5 +58,9 @@ sealed class UIWordConstant{
   ///TASK DETAIL
   static const String wDetail="Detail";
 
+  ///NOTIFICATION
+  static const String wNotifications="Notifications";
+  static const String wNotification="Notification";
+
 
 }

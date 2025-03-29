@@ -27,6 +27,11 @@ class MyDrawer extends StatelessWidget {
               navigationScreenName: RouteConstant.rTaskListScreen,
               iconData: Icons.task_outlined,
             ),
+            _DrawerTile(
+              title: UIWordConstant.wNotifications,
+              navigationScreenName: RouteConstant.rNotificationScreen,
+              iconData: Icons.notifications_outlined,
+            ),
           ],
         ),
       ),

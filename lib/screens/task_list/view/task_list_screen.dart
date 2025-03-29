@@ -133,18 +133,18 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                           style: MyThemeTextStyle.titleMedium(),
                                           maxLines: 2,
                                         ),
-                                        if (controller
-                                                    .tasks[index].description !=
-                                                null &&
-                                            controller.tasks[index].description!
-                                                .trim()
-                                                .isNotEmpty)
-                                          Text(
-                                            controller
-                                                .tasks[index].description!,
-                                            style: MyThemeTextStyle.bodyLarge(),
-                                            maxLines: 2,
-                                          ),
+                                        // if (controller
+                                        //             .tasks[index].description !=
+                                        //         null &&
+                                        //     controller.tasks[index].description!
+                                        //         .trim()
+                                        //         .isNotEmpty)
+                                        //   Text(
+                                        //     controller
+                                        //         .tasks[index].description!,
+                                        //     style: MyThemeTextStyle.bodyLarge(),
+                                        //     maxLines: 2,
+                                        //   ),
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,

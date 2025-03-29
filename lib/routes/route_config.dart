@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:task_app/routes/route_constant.dart';
 import 'package:task_app/screens/add_task/view/add_task_screen.dart';
 import 'package:task_app/screens/dashboard/dashboard_screen.dart';
+import 'package:task_app/screens/notification/notification_screen.dart';
 import 'package:task_app/screens/splash/splash_screen.dart';
 import 'package:task_app/screens/task_detail/task_details_screen.dart';
 import 'package:task_app/screens/task_list/view/task_list_screen.dart';
@@ -42,7 +43,11 @@ class RouteConfig {
           ),
           settings: settings,
         );
-
+      case RouteConstant.rNotificationScreen:
+        return MaterialPageRoute(
+          builder: (_) => const NotificationScreen(),
+          settings: settings,
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => const Scaffold(

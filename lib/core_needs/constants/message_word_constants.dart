@@ -9,4 +9,5 @@ sealed class MessageWordConstant{
   static const String mTaskDeleteContentMessage="Are you sure you want to delete this Task?";
   static const String mTaskDeletedMessage="Task Deleted Successfully";
   static const String mNoTasksAvailableMessage="No tasks available. Enjoy your day!";
+  static const String mNoNotificationAvailableMessage="No notifications available";
 }
