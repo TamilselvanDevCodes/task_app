@@ -1,31 +1,16 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:task_app/controllers/controller_service.dart';
 import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/theme.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
-import 'package:task_app/notification/firebase-notification_service.dart';
-import 'package:task_app/notification/notification_service.dart';
 import 'package:task_app/routes/route_config.dart';
 import 'package:task_app/routes/route_constant.dart';
-import 'firebase_options.dart';
 
 bool isDarkMode = false;
 
 void main() async {
-
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  NotificationService();
-  await FirebaseNotificationService.init();
-  ControllerService().initializeAllControllers();
-  demoLog();
+  await initVariables();
   runApp(const TaskApp());
 }
-
-
 
 class TaskApp extends StatefulWidget {
   const TaskApp({super.key});
@@ -76,11 +61,3 @@ class _TaskAppState extends State<TaskApp> with WidgetsBindingObserver {
   }
 }
 
-void demoLog() {
-  logger.t("Trace log");
-  logger.d("Debug log");
-  logger.i("Info log");
-  logger.w("Warning log");
-  logger.e("Error log", error: 'Test Error');
-  logger.f("Fatal log", error: "Error param", stackTrace: StackTrace.current);
-}

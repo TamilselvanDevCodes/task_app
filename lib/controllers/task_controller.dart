@@ -28,8 +28,8 @@ class TaskController extends GetxController{
     logger.d("CompletedTasks :$completedTasks");
   }
   void _filterTasksByStatus(){
-    tasks.map((task){
-      if(task.status==ComparisonConstant.cPending){
+    for(TaskModel task in tasks){
+     if(task.status==ComparisonConstant.cPending){
         pendingTasks.add(task);
       }
       else if(task.status==ComparisonConstant.cOverdue){
@@ -38,7 +38,7 @@ class TaskController extends GetxController{
       else if(task.status==ComparisonConstant.cCompleted){
         completedTasks.add(task);
       }
-    });
+    }
   }
   void _sortTasks(){
     tasks.sort((a, b) => b.dueDate.compareTo(a.dueDate));

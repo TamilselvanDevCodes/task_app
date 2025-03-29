@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+import '../core_needs/variables/global_variables.dart';
 import 'notification_response_model.dart';
 
 class NotificationService {
@@ -28,7 +29,7 @@ class NotificationService {
     await _flutterLocalNotificationsPlugin.initialize(
       initSettings,
       onDidReceiveNotificationResponse: (NotificationResponse response) {
-        print("Notification Clicked: ${response.payload}");
+        logger.i("Notification Clicked: ${response.payload}");
       },
     );
   }
@@ -41,6 +42,8 @@ class NotificationService {
         channelDescription: 'Displays notifications',
         importance: Importance.high,
         priority: Priority.high,
+        styleInformation: BigTextStyleInformation(''),
+
       ),
     );
   }
@@ -79,7 +82,7 @@ class NotificationService {
       id,
       title,
       body,
-      Duration(seconds: 1),
+      const Duration(seconds: 1),
       _getNotificationDetails(),
       payload: payload,
       androidScheduleMode: AndroidScheduleMode.exact,
