@@ -60,6 +60,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                           ),
                         )
                       : ListView.separated(
+                          physics: PageScrollPhysics(),
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
@@ -157,7 +158,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                                         .tasks[index].dueDate,
                                                   ),
                                                   children: [
-                                                    const TextSpan(text: " ("),
+                                                    const TextSpan(text: " \n("),
                                                     getDayView(
                                                       dueDate: controller
                                                           .tasks[index].dueDate,
@@ -167,6 +168,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                                     const TextSpan(text: ")"),
                                                   ],
                                                 ),
+                                                maxLines: 2,
                                               ),
                                             ),
                                             getTaskStatusTextWidget(
