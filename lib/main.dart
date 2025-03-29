@@ -57,7 +57,15 @@ class _TaskAppState extends State<TaskApp> with WidgetsBindingObserver {
       navigatorKey: navigatorKey,
       scaffoldMessengerKey: snackBarKey,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return Overlay(
+          initialEntries: [
+            OverlayEntry(
+              builder: (context) => child!,
+            ),
+          ],
+        );
+      },
     );
   }
 }
-

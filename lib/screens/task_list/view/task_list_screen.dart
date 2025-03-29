@@ -7,11 +7,13 @@ import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/screens/drawer.dart';
 import 'package:task_app/core_needs/theme_data/styles/border_style.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
+import 'package:task_app/core_needs/utils/common_functions.dart';
 import 'package:task_app/core_needs/utils/date_formatter.dart';
 import 'package:task_app/core_needs/utils/navigation_service.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/core_needs/widgets/alert_dialog.dart';
 import 'package:task_app/core_needs/widgets/app_bar.dart';
+import 'package:task_app/data/enums/all_enums.dart';
 import 'package:task_app/routes/route_constant.dart';
 import 'package:task_app/controllers/task_controller.dart';
 
@@ -90,7 +92,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                   ),
                                   confirmDismiss: (direction) async {
                                     bool confirmDelete = false;
-                                    await MyAlertDialog.showTwoButtonAlertDialog(
+                                    await MyAlertDialog
+                                        .showTwoButtonAlertDialog(
                                       context: context,
                                       title: UIWordConstant.wDeleteTask,
                                       message: MessageWordConstant

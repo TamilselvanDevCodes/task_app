@@ -13,10 +13,10 @@ sealed class DropDownListItems{
     UIWordConstant.wLow,
   ];
   static const List<String> repeatType=[
+    UIWordConstant.wOnce,
     UIWordConstant.wEveryday,
     UIWordConstant.wWeekly,
     UIWordConstant.wMonthly,
     // UIWordConstant.wCustom,
-    UIWordConstant.wOnce,
   ];
 }

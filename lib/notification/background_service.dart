@@ -25,7 +25,7 @@ Future<void> initializeBackgroundService() async {
 // Background Service Logic
 void onStart(ServiceInstance service) async {
   controllerService.initializeAllControllers();
-  Timer.periodic(const Duration(seconds: 5), (timer) async {
+  Timer.periodic(const Duration(hours: 1), (timer) async {
     DateTime now = DateTime.now();
     int currentHour = now.hour;
 
@@ -44,10 +44,10 @@ Future<void> checkPendingTasks() async {
   GeminiService geminiService = GeminiService();
   List<TaskModel> tasks = taskController.pendingTasks;
 
-  if(tasks.isNotEmpty){
-    TaskModel? pendingTask=tasks.first;
+  if (tasks.isNotEmpty) {
+    TaskModel? pendingTask = tasks.first;
     String message =
-    await geminiService.generateTaskReminder(taskModel: pendingTask);
+        await geminiService.generateTaskReminder(taskModel: pendingTask);
     logger.d("Notification Message From Gemini : $message");
     NotificationPayload notificationPayload = NotificationPayload(
       id: pendingTask.hashCode,
@@ -61,5 +61,4 @@ Future<void> checkPendingTasks() async {
       notificationPayload: notificationPayload,
     );
   }
-
 }
