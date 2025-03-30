@@ -1,6 +1,6 @@
 sealed class UIWordConstant{
   ///BASE
-  static const String wAppName="Task App";
+  static const String wAppName="Task Up";
   static const String wBlankString=" ";
   static const String wMandatory="*";
 

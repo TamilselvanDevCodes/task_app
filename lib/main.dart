@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:task_app/core_needs/constants/word_constants.dart';
 import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/theme.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
@@ -10,7 +11,6 @@ import 'package:task_app/routes/route_constant.dart';
 bool isDarkMode = false;
 
 void main() async {
-  await initVariables();
   runApp(const TaskApp());
 }
 
@@ -54,6 +54,7 @@ class _TaskAppState extends State<TaskApp> with WidgetsBindingObserver {
     return MaterialApp(
       onGenerateRoute: RouteConfig.onGenerateRoute,
       initialRoute: RouteConstant.rInitialRoute,
+      title: UIWordConstant.wAppName,
       theme: myThemeData.getBaseThemeData(isDarkMode: isDarkMode),
       darkTheme: myThemeData.getBaseThemeData(isDarkMode: isDarkMode),
       themeMode: ThemeMode.light,
