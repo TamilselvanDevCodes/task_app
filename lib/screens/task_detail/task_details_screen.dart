@@ -51,7 +51,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     return Scaffold(
       appBar: AppBars.getAppBar(
         title: UIWordConstant.wDetail,
-        isNotificationViewNotVisible: true,
+        isNotificationIconNotVisible: true,
       ),
       body: Container(
         color: taskModel?.status == ComparisonConstant.cPending

@@ -61,6 +61,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
     return Scaffold(
       appBar: AppBars.getAppBar(
         title: UIWordConstant.wAddTask,
+        isNotificationIconNotVisible: false,
       ),
       body: Padding(
         padding: MyPadding.getPaddingFormat(

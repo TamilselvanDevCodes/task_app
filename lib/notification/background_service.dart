@@ -26,7 +26,7 @@ Future<void> initializeBackgroundService() async {
 // Background Service Logic
 void onStart(ServiceInstance service) async {
   controllerService.initializeAllControllers();
-  Timer.periodic(const Duration(hours: 5), (timer) async {
+  Timer.periodic(const Duration(hours: 1), (timer) async {
     DateTime now = DateTime.now();
     int currentHour = now.hour;
 

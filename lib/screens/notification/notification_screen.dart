@@ -42,7 +42,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBars.getAppBar(
         title: UIWordConstant.wNotifications,
-        isNotificationViewNotVisible: true,
+        isNotificationIconNotVisible: false,
       ),
       drawer: const MyDrawer(),
       body: Padding(
