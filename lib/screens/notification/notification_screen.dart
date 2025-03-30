@@ -42,7 +42,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBars.getAppBar(
         title: UIWordConstant.wNotifications,
-        isNotificationScreen: true,
+        isNotificationViewNotVisible: true,
       ),
       drawer: const MyDrawer(),
       body: Padding(
@@ -93,7 +93,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         CrossAxisAlignment.start,
                                     spacing: SizeGetter.getHeight(
                                       multiplier: MultiplierConstant
-                                          .dMNotRelatedValueSeparation,
+                                          .dMNotRelatedValueSeparation*0.3,
                                     ),
                                     children: [
                                       Text(
@@ -103,17 +103,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                       ),
                                       Text(
                                         controller.notifications[index].message,
-                                        style: MyThemeTextStyle.bodyLarge(),
-                                        maxLines: 3,
+                                        style: MyThemeTextStyle.bodyMedium(),
+                                        maxLines: 2,
                                       ),
                                       Align(
                                         alignment: Alignment.centerRight,
                                         child: Text(
-                                          DateFormatter.formatDate(
-                                            controller
+                                          DateFormatter
+                                              .formatDateForNotificationView(
+                                            dateTime: controller
                                                 .notifications[index].timestamp,
                                           ),
-                                          style: MyThemeTextStyle.bodyLarge(),
+                                          style: MyThemeTextStyle.bodySmall(),
                                         ),
                                       ),
                                     ],

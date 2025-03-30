@@ -7,7 +7,7 @@ import 'package:task_app/routes/route_constant.dart';
 import 'package:get/get.dart';
 
 sealed class AppBars {
-  static AppBar getAppBar({required String title, bool? isNotificationScreen}) {
+  static AppBar getAppBar({required String title, bool? isNotificationViewNotVisible}) {
     return AppBar(
       title: Text(
         title,
@@ -15,7 +15,7 @@ sealed class AppBars {
       ),
       centerTitle: true,
       actions: [
-        if (!(isNotificationScreen != null && isNotificationScreen))
+        if (!(isNotificationViewNotVisible != null && isNotificationViewNotVisible))
           IconButton(
             onPressed: () async{
               NotificationController notificationController=Get.find();

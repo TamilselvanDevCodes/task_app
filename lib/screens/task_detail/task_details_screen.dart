@@ -38,6 +38,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     return Scaffold(
       appBar: AppBars.getAppBar(
         title: UIWordConstant.wDetail,
+        isNotificationViewNotVisible: true,
       ),
       body: Padding(
         padding: MyPadding.getDimensionEdgeInsets(

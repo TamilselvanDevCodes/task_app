@@ -18,8 +18,12 @@ class NotificationController extends GetxController {
 
   Future<void> getAllNotifications() async {
     notifications = await _notificationRepository.getAllNotifications();
+    _sortNotifications();
     update();
     logger.d("Notifications :$notifications");
+  }
+  void _sortNotifications(){
+    notifications.sort((a, b) => b.timestamp.compareTo(a.timestamp));
   }
 
 
