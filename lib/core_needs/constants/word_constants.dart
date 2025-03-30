@@ -57,6 +57,9 @@ sealed class UIWordConstant{
 
   ///TASK DETAIL
   static const String wDetail="Detail";
+  static const String wMarkAsComplete="Mark as complete";
+  static const String wCompletedDate="Completed Date";
+  static const String wRemarks="Remarks";
 
   ///NOTIFICATION
   static const String wNotifications="Notifications";

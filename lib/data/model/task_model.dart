@@ -1,5 +1,6 @@
 import 'dart:convert';
 import '../database/database_model.dart';
+
 class TaskModel extends DatabaseModel {
   final int? id; // Auto-incremented primary key
   String title;
@@ -11,6 +12,8 @@ class TaskModel extends DatabaseModel {
   List<int>? repeatList;
   String confirmed;
   String status;
+  String? remarks;
+  DateTime? completedDate;
 
   TaskModel({
     this.id, // Nullable since SQLite will auto-generate it
@@ -22,7 +25,9 @@ class TaskModel extends DatabaseModel {
     required this.repeat,
     this.repeatList,
     required this.confirmed,
-    required this.status
+    required this.status,
+    this.remarks,
+    this.completedDate,
   });
 
   @override
@@ -38,8 +43,10 @@ class TaskModel extends DatabaseModel {
       'priority': priority,
       'repeat': repeat,
       'repeatList': repeatList != null ? jsonEncode(repeatList) : null,
-      'status':status,
-      'confirmed':confirmed
+      'status': status,
+      'confirmed': confirmed,
+      'remarks': remarks,
+      'completedDate': completedDate?.millisecondsSinceEpoch,
       // Convert List<int> to JSON string
     };
   }
@@ -54,8 +61,12 @@ class TaskModel extends DatabaseModel {
       taskCategory: map['taskCategory'] as String,
       priority: map['priority'] as String,
       repeat: map['repeat'] as String,
-      confirmed: map["confirmed"]as String,
+      confirmed: map["confirmed"] as String,
       status: map['status'] as String,
+      remarks: map['remarks'],
+      completedDate: map['completedDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['completedDate'] as int)
+          : null,
       repeatList: map['repeatList'] != null
           ? List<int>.from(jsonDecode(map['repeatList'] as String))
           : null, // Convert JSON string back to List<int>
@@ -70,18 +81,19 @@ class TaskModel extends DatabaseModel {
     return TaskModel.fromMap(map);
   }
 
-  TaskModel copyWith({
-    int? id,
-    String? title,
-    String? description,
-    DateTime? dueDate,
-    String? taskCategory,
-    String? priority,
-    String? repeat,
-    List<int>? repeatList,
-    String? confirmed,
-    String? status,
-  }) {
+  TaskModel copyWith(
+      {int? id,
+      String? title,
+      String? description,
+      DateTime? dueDate,
+      String? taskCategory,
+      String? priority,
+      String? repeat,
+      List<int>? repeatList,
+      String? confirmed,
+      String? status,
+      String? remarks,
+      DateTime? completedDate}) {
     return TaskModel(
       id: id ?? this.id,
       title: title ?? this.title,
@@ -93,6 +105,8 @@ class TaskModel extends DatabaseModel {
       repeatList: repeatList ?? this.repeatList,
       confirmed: confirmed ?? this.confirmed,
       status: status ?? this.status,
+      remarks: remarks ?? this.remarks,
+      completedDate: completedDate ?? this.completedDate,
     );
   }
 }

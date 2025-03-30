@@ -8,7 +8,7 @@ import 'constants/style_constant.dart';
 import 'my_padding.dart';
 import 'styles/border_style.dart';
 import 'styles/color_getter.dart';
- MaterialColor myThemeColor=Colors.teal;
+ MaterialColor myThemeColor=Colors.blue;
 
 class MyThemeData {
 
@@ -108,8 +108,8 @@ class MyThemeData {
       ),
       bottomSheetTheme: BottomSheetThemeData(
         elevation: StyleConstant.mainElevation,
-        backgroundColor: myThemeColor[100],
-        modalBackgroundColor: myThemeColor[100],
+        backgroundColor: myThemeColor[50],
+        modalBackgroundColor: myThemeColor[50],
         modalElevation: StyleConstant.mainElevation,
         showDragHandle: true,
         dragHandleColor: Colors.grey,

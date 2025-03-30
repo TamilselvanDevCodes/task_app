@@ -60,7 +60,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                           ),
                         )
                       : ListView.separated(
-                          physics: PageScrollPhysics(),
+                          physics:const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {
@@ -131,7 +131,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                         Text(
                                           controller.tasks[index].title,
                                           style: MyThemeTextStyle.titleMedium(),
-                                          maxLines: 2,
                                         ),
                                         // if (controller
                                         //             .tasks[index].description !=
@@ -157,8 +156,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                                     controller
                                                         .tasks[index].dueDate,
                                                   ),
-                                                  children: [
-                                                    const TextSpan(text: " \n("),
+                                                  children: controller.tasks[index].status==ComparisonConstant.cPending?[
+                                                     const TextSpan(text: " \n("),
                                                     getDayView(
                                                       dueDate: controller
                                                           .tasks[index].dueDate,
@@ -166,7 +165,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                                           .tasks[index].status,
                                                     ),
                                                     const TextSpan(text: ")"),
-                                                  ],
+                                                  ]:[],
                                                 ),
                                                 maxLines: 2,
                                               ),
@@ -196,9 +195,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
                         );
                 },
               ),
-            ),
-            SizedBox(
-              height: sizeConstants.sH07,
             ),
           ],
         ),

@@ -59,7 +59,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           child: Text(
                             MessageWordConstant.mNoNotificationAvailableMessage,
                             style: MyThemeTextStyle.titleLarge(),
-                            maxLines: 2,
                           ),
                         )
                       : ListView.separated(
@@ -93,18 +92,17 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         CrossAxisAlignment.start,
                                     spacing: SizeGetter.getHeight(
                                       multiplier: MultiplierConstant
-                                          .dMNotRelatedValueSeparation*0.3,
+                                              .dMNotRelatedValueSeparation *
+                                          0.3,
                                     ),
                                     children: [
                                       Text(
                                         controller.notifications[index].title,
                                         style: MyThemeTextStyle.titleMedium(),
-                                        maxLines: 2,
                                       ),
                                       Text(
                                         controller.notifications[index].message,
                                         style: MyThemeTextStyle.bodyMedium(),
-                                        maxLines: 2,
                                       ),
                                       Align(
                                         alignment: Alignment.centerRight,
@@ -114,7 +112,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                             dateTime: controller
                                                 .notifications[index].timestamp,
                                           ),
-                                          style: MyThemeTextStyle.bodySmall(),
+                                          style: MyThemeTextStyle.bodySmall()
+                                              .copyWith(
+                                            color: Colors.grey.shade700,
+                                          ),
                                         ),
                                       ),
                                     ],

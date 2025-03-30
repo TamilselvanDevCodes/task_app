@@ -14,6 +14,7 @@ class FormTile extends StatefulWidget {
   final String? Function(String?)? validator;
   final bool? isDateTimePicker;
   final TextInputAction? textInputAction;
+  final bool? canDisposeController;
 
   @override
   State<FormTile> createState() => _FormTileState();
@@ -29,6 +30,7 @@ class FormTile extends StatefulWidget {
     this.isObscureText,
     required this.controller,
     this.textInputAction,
+    this.canDisposeController,
   });
 }
 
@@ -48,7 +50,9 @@ class _FormTileState extends State<FormTile> {
 
   @override
   void dispose() {
-    widget.controller.dispose();
+    if(widget.canDisposeController==null||widget.canDisposeController!){
+      widget.controller.dispose();
+    }
     super.dispose();
   }
 

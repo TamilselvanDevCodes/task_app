@@ -50,7 +50,7 @@ sealed class MyThemeTextStyle {
       fontWeight: fontWeight,
       letterSpacing:MyFontSize.letterSpacing,
       height:MyFontSize.height,
-      overflow: TextOverflow.ellipsis,
+      // overflow: TextOverflow.ellipsis,
       leadingDistribution: TextLeadingDistribution.proportional,
       wordSpacing: MyFontSize.letterSpacing*2,
       color: isDarkMode?Colors.white:Colors.black,

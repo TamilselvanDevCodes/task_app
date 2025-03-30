@@ -83,6 +83,28 @@ class TaskController extends GetxController {
     }
   }
 
+  Future<void> updateTask({required TaskModel? taskModel}) async {
+    if (taskModel == null) {
+      logger.e("UpdateTask taskModel is null!");
+      return;
+    }
+    bool isUpdated = await _taskRepository.updateTask(taskModel: taskModel,);
+    logger.i("isUpdated : $isUpdated");
+    if (isUpdated) {
+      NavigationService.pop();
+      getAllTasks();
+      showSnackBar(
+        content: MessageWordConstant.mTaskUpdatedMessage,
+        snackBarEnum: SnackBarEnum.success,
+      );
+    } else {
+      showSnackBar(
+        content: MessageWordConstant.mErrorMessage,
+        snackBarEnum: SnackBarEnum.error,
+      );
+    }
+  }
+
   void updateStatus() {
     DateTime today = DateTime.now();
 
