@@ -15,7 +15,7 @@ sealed class AppBars {
       ),
       centerTitle: true,
       actions: [
-        if (isNotificationIconNotVisible != null && !isNotificationIconNotVisible)
+        if (!(isNotificationIconNotVisible != null && !isNotificationIconNotVisible))
           IconButton(
             onPressed: () async{
               NotificationController notificationController=Get.find();
