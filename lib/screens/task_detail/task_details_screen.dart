@@ -3,6 +3,8 @@ import 'package:task_app/core_needs/constants/comparison_constants.dart';
 import 'package:task_app/core_needs/theme_data/constants/size_constants.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
 import 'package:task_app/core_needs/utils/date_formatter.dart';
+import 'package:task_app/core_needs/utils/drop_down_list_items.dart';
+import 'package:task_app/core_needs/widgets/circle_tile.dart';
 import 'package:task_app/core_needs/widgets/form_tile.dart';
 import '../../controllers/task_controller.dart';
 import '../../core_needs/constants/word_constants.dart';
@@ -102,18 +104,25 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                         ),
                         if (taskModel?.repeatList?.isNotEmpty ?? false)
                           Row(
-                            children: taskModel!.repeatList!
-                                .map(
-                                  (value) => Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 4.0),
-                                    child: Text(value.toString()),
-                                  ),
-                                )
-                                .toList(),
-                          )
-                        else
-                          const SizedBox.shrink(),
+                            spacing: SizeGetter.getWidth(
+                              multiplier: MultiplierConstant.dM01,
+                            ),
+                            children:
+                                DropDownListItems.days.asMap().entries.map(
+                              (entry) {
+                                int index = entry.key;
+                                String value = entry.value;
+                                bool isSelected =
+                                    taskModel?.repeatList![index] ==
+                                        1; // Check if selected
+                                return CircleTile(
+                                  childText: value,
+                                  initialSelected: isSelected,
+                                  canToggle: false,
+                                );
+                              },
+                            ).toList(),
+                          ),
                       ],
                     ),
                     taskModel!.status == ComparisonConstant.cCompleted

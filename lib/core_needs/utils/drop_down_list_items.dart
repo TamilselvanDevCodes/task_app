@@ -19,4 +19,13 @@ sealed class DropDownListItems{
     UIWordConstant.wMonthly,
     UIWordConstant.wCustom,
   ];
+  static const List<String> days=[
+    UIWordConstant.wSunday,
+    UIWordConstant.wMonday,
+    UIWordConstant.wTuesday,
+    UIWordConstant.wWednesday,
+    UIWordConstant.wThursday,
+    UIWordConstant.wFriday,
+    UIWordConstant.wSaturday,
+  ];
 }

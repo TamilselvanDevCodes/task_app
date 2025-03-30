@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import '../theme_data/theme.dart';
 class CircleTile extends StatefulWidget {
   final String childText;
-  final bool initialSelected; // Pass initial selection state
-
+  final bool initialSelected;
+  final bool? canToggle;
+  final VoidCallback? onChanged;
   const CircleTile({
     super.key,
     required this.childText,
     this.initialSelected = false,
+    this.onChanged,
+    this.canToggle,
   });
 
   @override
@@ -30,13 +33,16 @@ class _CircleTileState extends State<CircleTile> {
   }
 
   void toggleSelection() {
-    isSelected.value = !isSelected.value; // Update only this widget
+    isSelected.value = !isSelected.value;
+    if(widget.onChanged!=null){
+      widget.onChanged!();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: toggleSelection, // Toggle on tap
+      onTap:widget.canToggle!=null&&!widget.canToggle!?null:toggleSelection, // Toggle on tap
       child: ValueListenableBuilder<bool>(
         valueListenable: isSelected,
         builder: (context, value, child) {

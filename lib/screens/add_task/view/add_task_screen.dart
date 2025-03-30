@@ -8,6 +8,7 @@ import 'package:task_app/core_needs/theme_data/my_padding.dart';
 import 'package:task_app/core_needs/theme_data/theme.dart';
 import 'package:task_app/core_needs/utils/date_formatter.dart';
 import 'package:task_app/core_needs/utils/drop_down_list_items.dart';
+import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/core_needs/widgets/alert_dialog.dart';
 import 'package:task_app/core_needs/widgets/app_bar.dart';
 import 'package:task_app/core_needs/widgets/circle_tile.dart';
@@ -16,6 +17,7 @@ import 'package:task_app/core_needs/widgets/form_tile.dart';
 import 'package:get/get.dart';
 
 import '../../../data/model/task_model.dart';
+
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({super.key});
 
@@ -24,7 +26,7 @@ class AddTaskScreen extends StatefulWidget {
 }
 
 class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
-  TaskController taskController=Get.find<TaskController>();
+  TaskController taskController = Get.find<TaskController>();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -34,11 +36,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
   TextEditingController repeatTaskTypeController = TextEditingController();
   List<ToggleItem> toggleItems = [
     ToggleItem(name: UIWordConstant.wSunday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wMonday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wTuesday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wWednesday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wThursday, isSelected: false),
-    ToggleItem(name: UIWordConstant.wFriday, isSelected: false),
+    ToggleItem(name: UIWordConstant.wMonday, isSelected: true),
+    ToggleItem(name: UIWordConstant.wTuesday, isSelected: true),
+    ToggleItem(name: UIWordConstant.wWednesday, isSelected: true),
+    ToggleItem(name: UIWordConstant.wThursday, isSelected: true),
+    ToggleItem(name: UIWordConstant.wFriday, isSelected: true),
     ToggleItem(name: UIWordConstant.wSaturday, isSelected: false),
   ];
   ValueNotifier<String> repeatTaskTypeValueNotifier =
@@ -53,6 +55,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
     repeatTaskTypeController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +119,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
             child: OutlinedButton(
               style: OutlinedButton.styleFrom(
                   shape: const RoundedRectangleBorder()),
-              onPressed:onPressedForCancelButton,
+              onPressed: onPressedForCancelButton,
               child: const Text(
                 UIWordConstant.wCancel,
               ),
@@ -127,7 +130,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
               style: ElevatedButton.styleFrom(
                 shape: const RoundedRectangleBorder(),
               ),
-              onPressed:onPressedForSaveButton,
+              onPressed: onPressedForSaveButton,
               child: const Text(
                 UIWordConstant.wSave,
               ),
@@ -138,13 +141,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
     );
   }
 
-  void onPressedForDiscardButton() async{
-    if(titleController.text.isNotEmpty){
-      List<int> repeatDays = List.from(
-        toggleItems.takeWhile(
-              (toggleItem) => toggleItem.isSelected,
-        ),
-      );
+  void onPressedForDiscardButton() async {
+    if (titleController.text.isNotEmpty) {
+      List<int> repeatDays = [];
+      for (ToggleItem item in toggleItems) {
+        repeatDays.add(item.isSelected ? 1 : 0);
+      }
       TaskModel newTask = TaskModel(
         title: titleController.text,
         description: descriptionController.text,
@@ -152,6 +154,39 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
         taskCategory: taskCategoryController.text,
         priority: priorityController.text,
         confirmed: ComparisonConstant.cNo,
+        status: ComparisonConstant.cPending,
+        repeat: repeatTaskTypeController.text,
+        repeatList: repeatDays.isEmpty ? null : repeatDays,
+      );
+      taskController.insertTask(newTask: newTask);
+    }
+  }
+
+  void onPressedForExitButton() async {
+    Navigator.pop(context);
+    Navigator.pop(context);
+  }
+
+  void onPressedForSaveButton() async {
+    bool validated = validate();
+    if (validated) {
+      List<int> repeatDays = [];
+      if(repeatTaskTypeController.text==UIWordConstant.wWeekly){
+        repeatDays=[1,0,0,0,0,0,0];
+      }
+      else if(repeatTaskTypeController.text==UIWordConstant.wCustom){
+        for (ToggleItem item in toggleItems) {
+          repeatDays.add(item.isSelected ? 1 : 0);
+        }
+      }
+      logger.i("repeatDays : $repeatDays");
+      TaskModel newTask = TaskModel(
+        title: titleController.text,
+        description: descriptionController.text,
+        dueDate: DateFormatter.parseDate(dueDateController.text),
+        taskCategory: taskCategoryController.text,
+        priority: priorityController.text,
+        confirmed: ComparisonConstant.cYes,
         status: ComparisonConstant.cPending,
         repeat: repeatTaskTypeController.text,
         repeatList: repeatDays.isEmpty
@@ -162,38 +197,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
     }
   }
 
-  void onPressedForExitButton() async{
-    Navigator.pop(context);
-    Navigator.pop(context);
-  }
-
-  void onPressedForSaveButton()async{
-    bool validated = validate();
-    if (validated) {
-      List<int> repeatDays = List.from(
-        toggleItems.takeWhile(
-              (toggleItem) => toggleItem.isSelected,
-        ),
-      );
-      TaskModel newTask = TaskModel(
-        title: titleController.text,
-        description: descriptionController.text,
-        dueDate: DateFormatter.parseDate(dueDateController.text),
-        taskCategory: taskCategoryController.text,
-        priority: priorityController.text,
-        confirmed: ComparisonConstant.cYes,
-        status:ComparisonConstant.cPending,
-        repeat: repeatTaskTypeController.text,
-        repeatList: repeatDays.isEmpty
-            ? null
-            : repeatDays, // Example repeating on Monday, Wednesday, Friday
-      );
-      taskController.insertTask(newTask: newTask);
-    }
-  }
-
-  void onPressedForCancelButton () {
-    if(titleController.text.isNotEmpty){
+  void onPressedForCancelButton() {
+    if (titleController.text.isNotEmpty) {
       MyAlertDialog.showTwoButtonAlertDialog(
         context: context,
         title: UIWordConstant.wDiscardChanges,
@@ -203,9 +208,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
         outlinedButtonOnPressed: onPressedForExitButton,
         elevatedButtonOnPressed: onPressedForDiscardButton,
       );
-    }
-    else{
-    Navigator.pop(context);
+    } else {
+      Navigator.pop(context);
     }
   }
 
@@ -251,11 +255,12 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
                 children: List.generate(
                   toggleItems.length,
                   (index) => CircleTile(
-                    initialSelected:
-                        index == 0 || index == toggleItems.length - 1
-                            ? toggleItems[index].isSelected
-                            : true,
+                    initialSelected: toggleItems[index].isSelected,
                     childText: toggleItems[index].name,
+                    onChanged: () {
+                      toggleItems[index].isSelected =
+                          !toggleItems[index].isSelected;
+                    },
                   ),
                 ),
               ),
