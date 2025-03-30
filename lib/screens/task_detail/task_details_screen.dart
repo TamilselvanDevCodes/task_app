@@ -33,6 +33,12 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    remarksController.dispose();
+    super.dispose();
+  }
+
   void initializeParams() {
     taskModel = widget.taskModel;
     setState(() {});

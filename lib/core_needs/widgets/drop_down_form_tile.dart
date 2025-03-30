@@ -9,6 +9,7 @@ class DropDownFormTile extends StatefulWidget {
   final TextEditingController controller;
   final int? initialIndexValue;
   final String title;
+  final bool? canDisposeController;
   final void Function(String value)? onUpdated;
 
   const DropDownFormTile({
@@ -17,6 +18,7 @@ class DropDownFormTile extends StatefulWidget {
     required this.dropDownItems,
     required this.controller,
     this.onUpdated,
+    this.canDisposeController,
     required this.title,
   });
 
@@ -42,7 +44,9 @@ class _DropDownFormTileState extends State<DropDownFormTile> {
 
   @override
   void dispose() {
-    widget.controller.dispose();
+    if(widget.canDisposeController==null||widget.canDisposeController!){
+      widget.controller.dispose();
+    }
     super.dispose();
   }
 

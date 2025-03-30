@@ -49,6 +49,11 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
   }
 
   @override
+  void dispose() {
+    repeatTaskTypeController.dispose();
+    super.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBars.getAppBar(
@@ -213,6 +218,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
             title: UIWordConstant.wRepeat,
             dropDownItems: DropDownListItems.repeatType,
             controller: repeatTaskTypeController,
+            canDisposeController: false,
             onUpdated: (value) {
               repeatTaskTypeValueNotifier.value = value;
             },
@@ -228,6 +234,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
                 title: UIWordConstant.wRepeat,
                 dropDownItems: DropDownListItems.repeatType,
                 controller: repeatTaskTypeController,
+                canDisposeController: false,
                 onUpdated: (value) {
                   repeatTaskTypeValueNotifier.value = value;
                 },
