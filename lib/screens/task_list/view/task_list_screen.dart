@@ -13,11 +13,11 @@ import 'package:task_app/core_needs/utils/navigation_service.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/core_needs/widgets/alert_dialog.dart';
 import 'package:task_app/core_needs/widgets/app_bar.dart';
-import 'package:task_app/data/enums/all_enums.dart';
 import 'package:task_app/routes/route_constant.dart';
 import 'package:task_app/controllers/task_controller.dart';
 
 import '../../../core_needs/theme_data/my_padding.dart';
+import '../../../data/model/task_model.dart';
 
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen({super.key});
@@ -51,7 +51,8 @@ class _TaskListScreenState extends State<TaskListScreen> {
             Expanded(
               child: GetBuilder<TaskController>(
                 builder: (controller) {
-                  return controller.tasks.isEmpty
+                  List<TaskModel> tasks=controller.pendingTasks;
+                  return tasks.isEmpty
                       ? Center(
                           child: Text(
                             MessageWordConstant.mNoTasksAvailableMessage,
@@ -66,13 +67,13 @@ class _TaskListScreenState extends State<TaskListScreen> {
                               onTap: () {
                                 NavigationService.pushNamed(
                                   RouteConstant.rTaskDetailScreen,
-                                  arguments: controller.tasks[index],
+                                  arguments: tasks[index],
                                 );
                               },
                               child: Card(
                                 child: Dismissible(
                                   key: Key(
-                                    controller.tasks[index].hashCode.toString(),
+                                    tasks[index].hashCode.toString(),
                                   ),
                                   direction: DismissDirection.endToStart,
                                   background: Container(
@@ -106,9 +107,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                       },
                                       elevatedButtonOnPressed: () {
                                         logger.d(
-                                            "controller.tasks[index].id: ${controller.tasks[index].id}");
+                                            "tasks[index].id: ${tasks[index].id}");
                                         controller.deleteTask(
-                                            taskId: controller.tasks[index].id);
+                                            taskId: tasks[index].id);
                                         confirmDelete = true;
                                         Navigator.pop(context);
                                       },
@@ -129,7 +130,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                       ),
                                       children: [
                                         Text(
-                                          controller.tasks[index].title,
+                                          tasks[index].title,
                                           style: MyThemeTextStyle.titleMedium(),
                                         ),
                                         // if (controller
@@ -153,16 +154,13 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                                 TextSpan(
                                                   text:
                                                       DateFormatter.formatDate(
-                                                    controller
-                                                        .tasks[index].dueDate,
+                                                    tasks[index].dueDate,
                                                   ),
-                                                  children: controller.tasks[index].status==ComparisonConstant.cPending?[
+                                                  children: tasks[index].status==ComparisonConstant.cPending?[
                                                      const TextSpan(text: " \n("),
                                                     getDayView(
-                                                      dueDate: controller
-                                                          .tasks[index].dueDate,
-                                                      taskStatus: controller
-                                                          .tasks[index].status,
+                                                      dueDate: tasks[index].dueDate,
+                                                      taskStatus: tasks[index].status,
                                                     ),
                                                     const TextSpan(text: ")"),
                                                   ]:[],
@@ -171,8 +169,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                               ),
                                             ),
                                             getTaskStatusTextWidget(
-                                                taskStatus: controller
-                                                    .tasks[index].status),
+                                                taskStatus:tasks[index].status),
                                           ],
                                         )
                                       ],
@@ -182,7 +179,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                               ),
                             );
                           },
-                          itemCount: controller.tasks.length,
+                          itemCount: tasks.length,
                           shrinkWrap: true,
                           separatorBuilder: (BuildContext context, int index) {
                             return SizedBox(
