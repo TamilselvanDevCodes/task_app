@@ -31,8 +31,13 @@ class TaskController extends GetxController {
     logger.d("CompletedTasks :$completedTasks");
   }
 
+
   void _filterTasksByStatus() {
     for (TaskModel task in tasks) {
+      if(task.dueDate.isBefore(DateTime.now(),)){
+        print("overdue called");
+        task.status=ComparisonConstant.cOverdue;
+      }
       if (task.status == ComparisonConstant.cPending) {
         pendingTasks.add(task);
       } else if (task.status == ComparisonConstant.cOverdue) {

@@ -140,7 +140,7 @@ class _TaskDetailsScreenState extends State<TaskDetailsScreen> {
                           )
                         : const SizedBox(),
                     const Spacer(),
-                    taskModel!.status == ComparisonConstant.cPending
+                    taskModel!.status == ComparisonConstant.cPending||taskModel!.status == ComparisonConstant.cOverdue
                         ? _getPendingTaskView(
                             context: context,
                             taskModel: taskModel!,
