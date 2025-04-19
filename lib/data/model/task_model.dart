@@ -109,4 +109,9 @@ class TaskModel extends DatabaseModel {
       completedDate: completedDate ?? this.completedDate,
     );
   }
+
+  @override
+  String toString() {
+    return 'TaskModel{id: $id, title: $title, description: $description, dueDate: $dueDate, taskCategory: $taskCategory, priority: $priority, repeat: $repeat, repeatList: $repeatList, confirmed: $confirmed, status: $status, remarks: $remarks, completedDate: $completedDate}';
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:task_app/core_needs/constants/word_constants.dart';
 import 'package:task_app/core_needs/utils/navigation_service.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/data/database/repository/task_repository.dart';
@@ -20,7 +21,7 @@ class TaskController extends GetxController {
     getAllTasks();
   }
 
-  void getAllTasks() async {
+  Future<void> getAllTasks() async {
     tasks = await _taskRepository.getAllTasks();
     _sortTasks();
     _filterTasksByStatus();
@@ -32,10 +33,9 @@ class TaskController extends GetxController {
   }
 
 
-  void _filterTasksByStatus() {
+  void _filterTasksByStatus()async {
     for (TaskModel task in tasks) {
       if(task.dueDate.isBefore(DateTime.now(),)){
-        print("overdue called");
         task.status=ComparisonConstant.cOverdue;
       }
       if (task.status == ComparisonConstant.cPending) {
@@ -43,6 +43,28 @@ class TaskController extends GetxController {
       } else if (task.status == ComparisonConstant.cOverdue) {
         overDueTasks.add(task);
       } else if (task.status == ComparisonConstant.cCompleted) {
+        if(task.repeat==UIWordConstant.wEveryday){
+          TaskModel taskModel=TaskModel.fromMap(task.toMap());
+          taskModel.dueDate=DateTime.now();
+          taskModel.status=ComparisonConstant.cPending;
+          taskModel.completedDate=null;
+          taskModel.remarks=null;
+          await _taskRepository.insertTask(taskModel: taskModel);
+        }
+        else if (task.repeat == UIWordConstant.wWeekly) {
+          int currentWeekday = (DateTime.now().weekday) % 7;
+          print("currentWeekday : $currentWeekday");
+          if (task.repeatList![currentWeekday] == 1) {
+            TaskModel taskModel = TaskModel.fromMap(task.toMap());
+            taskModel.dueDate = DateTime.now().add(const Duration(days: 7));
+            taskModel.status = ComparisonConstant.cPending;
+            taskModel.completedDate = null;
+            taskModel.remarks = null;
+
+            await _taskRepository.insertTask(taskModel: taskModel);
+          }
+        }
+
         completedTasks.add(task);
       }
     }
@@ -58,6 +80,7 @@ class TaskController extends GetxController {
     if (isInserted) {
       tasks.add(newTask);
       _sortTasks();
+      _filterTasksByStatus();
       update();
     }
     if (newTask.confirmed == "yes") {
@@ -97,7 +120,7 @@ class TaskController extends GetxController {
     logger.i("isUpdated : $isUpdated");
     if (isUpdated) {
       NavigationService.pop();
-      getAllTasks();
+      await getAllTasks();
       showSnackBar(
         content: MessageWordConstant.mTaskUpdatedMessage,
         snackBarEnum: SnackBarEnum.success,

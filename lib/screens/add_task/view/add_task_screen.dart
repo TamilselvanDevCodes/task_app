@@ -173,7 +173,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> with Validators {
     if (validated) {
       List<int> repeatDays = [];
       if(repeatTaskTypeController.text==UIWordConstant.wWeekly){
-        repeatDays=[1,0,0,0,0,0,0];
+        int currentWeekday = DateTime.now().weekday % 7; // Convert (Monday=1) to (Sunday=0)
+        repeatDays = List.filled(7, 0);
+        repeatDays[currentWeekday] = 1;
       }
       else if(repeatTaskTypeController.text==UIWordConstant.wCustom){
         for (ToggleItem item in toggleItems) {

@@ -53,7 +53,7 @@ class MyThemeData {
         confirmButtonStyle: MyButtonStyle.getElevatedButtonStyle(),
         cancelButtonStyle: MyButtonStyle.getOutlinedButtonStyle(),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         elevation: StyleConstant.subElevation,
         // shape: RoundedRectangleBorder(
         //   borderRadius: getBorderRadius(),
@@ -119,7 +119,7 @@ class MyThemeData {
         ),
         clipBehavior: Clip.hardEdge,
       ),
-      dialogTheme: DialogTheme(
+      dialogTheme: DialogThemeData(
         backgroundColor: myThemeColor[50],
         actionsPadding: MyPadding.getDimensionEdgeInsets(multiplier: MultiplierConstant.dM01),
         contentTextStyle: MyThemeTextStyle.bodyLarge().copyWith(

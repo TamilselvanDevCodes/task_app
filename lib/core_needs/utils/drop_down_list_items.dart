@@ -1,5 +1,7 @@
 import 'package:task_app/core_needs/constants/word_constants.dart';
 
+import '../constants/comparison_constants.dart';
+
 sealed class DropDownListItems{
   static const List<String> taskCategoryType=[
     UIWordConstant.wImmediate,
@@ -27,5 +29,11 @@ sealed class DropDownListItems{
     UIWordConstant.wThursday,
     UIWordConstant.wFriday,
     UIWordConstant.wSaturday,
+  ];
+  static List<String> tasksFilterOptions=[
+    ComparisonConstant.cPending,
+    ComparisonConstant.cOverdue,
+    ComparisonConstant.cCompleted,
+    ComparisonConstant.cAll,
   ];
 }

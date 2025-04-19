@@ -9,10 +9,12 @@ import 'package:task_app/core_needs/theme_data/styles/border_style.dart';
 import 'package:task_app/core_needs/theme_data/styles/text_style.dart';
 import 'package:task_app/core_needs/utils/common_functions.dart';
 import 'package:task_app/core_needs/utils/date_formatter.dart';
+import 'package:task_app/core_needs/utils/drop_down_list_items.dart';
 import 'package:task_app/core_needs/utils/navigation_service.dart';
 import 'package:task_app/core_needs/variables/global_variables.dart';
 import 'package:task_app/core_needs/widgets/alert_dialog.dart';
 import 'package:task_app/core_needs/widgets/app_bar.dart';
+import 'package:task_app/core_needs/widgets/filter_drop_down.dart';
 import 'package:task_app/routes/route_constant.dart';
 import 'package:task_app/controllers/task_controller.dart';
 
@@ -27,13 +29,19 @@ class TaskListScreen extends StatefulWidget {
 }
 
 class _TaskListScreenState extends State<TaskListScreen> {
+  List<TaskModel> tasks = [];
+
   @override
   void initState() {
     initialize();
     super.initState();
   }
 
-  void initialize() async {}
+  void initialize() async {
+    TaskController controller = Get.find();
+    tasks.addAll(controller.pendingTasks);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,145 +59,193 @@ class _TaskListScreenState extends State<TaskListScreen> {
             Expanded(
               child: GetBuilder<TaskController>(
                 builder: (controller) {
-                  List<TaskModel> tasks=controller.pendingTasks;
-                  return tasks.isEmpty
-                      ? Center(
-                          child: Text(
-                            MessageWordConstant.mNoTasksAvailableMessage,
-                            style: MyThemeTextStyle.titleLarge(),
-                            maxLines: 4,
-                          ),
-                        )
-                      : ListView.separated(
-                          physics:const BouncingScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return GestureDetector(
-                              onTap: () {
-                                NavigationService.pushNamed(
-                                  RouteConstant.rTaskDetailScreen,
-                                  arguments: tasks[index],
-                                );
-                              },
-                              child: Card(
-                                child: Dismissible(
-                                  key: Key(
-                                    tasks[index].hashCode.toString(),
-                                  ),
-                                  direction: DismissDirection.endToStart,
-                                  background: Container(
-                                    alignment: Alignment.centerRight,
-                                    padding: MyPadding.getDimensionEdgeInsets(
+                  logger.d("tasks : $tasks");
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      FilterDropdown(
+                          options: DropDownListItems.tasksFilterOptions,
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              return;
+                            }
+                            if (value == ComparisonConstant.cAll) {
+                              tasks = controller.tasks;
+                            } else if (value == ComparisonConstant.cPending) {
+                              tasks = controller.pendingTasks;
+                            } else if (value == ComparisonConstant.cOverdue) {
+                              tasks = controller.overDueTasks;
+                            } else if (value == ComparisonConstant.cCompleted) {
+                              tasks = controller.completedTasks;
+                            }
+                            setState(() {});
+                            print("value : $value");
+                            print("tasks : $tasks");
+                          }),
+                      tasks.isEmpty
+                          ? Expanded(
+                              child: Center(
+                                child: Text(
+                                  MessageWordConstant.mNoTasksAvailableMessage,
+                                  style: MyThemeTextStyle.titleLarge(),
+                                  maxLines: 4,
+                                ),
+                              ),
+                            )
+                          : Expanded(
+                              child: ListView.separated(
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      NavigationService.pushNamed(
+                                        RouteConstant.rTaskDetailScreen,
+                                        arguments: tasks[index],
+                                      );
+                                    },
+                                    child: Card(
+                                      child: Dismissible(
+                                        key: Key(
+                                          tasks[index].hashCode.toString(),
+                                        ),
+                                        direction: DismissDirection.endToStart,
+                                        background: Container(
+                                          alignment: Alignment.centerRight,
+                                          padding:
+                                              MyPadding.getDimensionEdgeInsets(
+                                            multiplier: MultiplierConstant
+                                                .dMRelatedValueSeparation,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius: getBorderRadius(),
+                                            color: Colors.red.shade300,
+                                          ),
+                                          child: Icon(
+                                            Icons.delete,
+                                            size: MyFontSize.sizeMedium,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        confirmDismiss: (direction) async {
+                                          bool confirmDelete = false;
+                                          await MyAlertDialog
+                                              .showTwoButtonAlertDialog(
+                                            context: context,
+                                            title: UIWordConstant.wDeleteTask,
+                                            message: MessageWordConstant
+                                                .mTaskDeleteContentMessage,
+                                            elevatedButtonText:
+                                                UIWordConstant.wYes,
+                                            outlinedButtonText:
+                                                UIWordConstant.wNo,
+                                            outlinedButtonOnPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            elevatedButtonOnPressed: () {
+                                              logger.d(
+                                                  "tasks[index].id: ${tasks[index].id}");
+                                              controller.deleteTask(
+                                                  taskId: tasks[index].id);
+                                              confirmDelete = true;
+                                              Navigator.pop(context);
+                                            },
+                                          );
+
+                                          return confirmDelete;
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              MyPadding.getDimensionEdgeInsets(
+                                            multiplier: MultiplierConstant.dM01,
+                                          ),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            spacing: SizeGetter.getHeight(
+                                              multiplier: MultiplierConstant
+                                                  .dMNotRelatedValueSeparation,
+                                            ),
+                                            children: [
+                                              Text(
+                                                tasks[index].title,
+                                                style: MyThemeTextStyle
+                                                    .titleMedium(),
+                                              ),
+                                              // if (controller
+                                              //             .tasks[index].description !=
+                                              //         null &&
+                                              //     controller.tasks[index].description!
+                                              //         .trim()
+                                              //         .isNotEmpty)
+                                              //   Text(
+                                              //     controller
+                                              //         .tasks[index].description!,
+                                              //     style: MyThemeTextStyle.bodyLarge(),
+                                              //     maxLines: 2,
+                                              //   ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Expanded(
+                                                    child: Text.rich(
+                                                      TextSpan(
+                                                        text: DateFormatter
+                                                            .formatDate(
+                                                          tasks[index].dueDate,
+                                                        ),
+                                                        children: tasks[index]
+                                                                    .status ==
+                                                                ComparisonConstant
+                                                                    .cPending
+                                                            ? [
+                                                                const TextSpan(
+                                                                    text:
+                                                                        " \n("),
+                                                                getDayView(
+                                                                  dueDate: tasks[
+                                                                          index]
+                                                                      .dueDate,
+                                                                  taskStatus:
+                                                                      tasks[index]
+                                                                          .status,
+                                                                ),
+                                                                const TextSpan(
+                                                                    text: ")"),
+                                                              ]
+                                                            : [],
+                                                      ),
+                                                      maxLines: 2,
+                                                    ),
+                                                  ),
+                                                  getTaskStatusTextWidget(
+                                                      taskStatus:
+                                                          tasks[index].status),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                                itemCount: tasks.length,
+                                shrinkWrap: true,
+                                separatorBuilder:
+                                    (BuildContext context, int index) {
+                                  return SizedBox(
+                                    height: SizeGetter.getHeight(
                                       multiplier: MultiplierConstant
                                           .dMRelatedValueSeparation,
                                     ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: getBorderRadius(),
-                                      color: Colors.red.shade300,
-                                    ),
-                                    child: Icon(
-                                      Icons.delete,
-                                      size: MyFontSize.sizeMedium,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  confirmDismiss: (direction) async {
-                                    bool confirmDelete = false;
-                                    await MyAlertDialog
-                                        .showTwoButtonAlertDialog(
-                                      context: context,
-                                      title: UIWordConstant.wDeleteTask,
-                                      message: MessageWordConstant
-                                          .mTaskDeleteContentMessage,
-                                      elevatedButtonText: UIWordConstant.wYes,
-                                      outlinedButtonText: UIWordConstant.wNo,
-                                      outlinedButtonOnPressed: () {
-                                        Navigator.pop(context);
-                                      },
-                                      elevatedButtonOnPressed: () {
-                                        logger.d(
-                                            "tasks[index].id: ${tasks[index].id}");
-                                        controller.deleteTask(
-                                            taskId: tasks[index].id);
-                                        confirmDelete = true;
-                                        Navigator.pop(context);
-                                      },
-                                    );
-
-                                    return confirmDelete;
-                                  },
-                                  child: Padding(
-                                    padding: MyPadding.getDimensionEdgeInsets(
-                                      multiplier: MultiplierConstant.dM01,
-                                    ),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      spacing: SizeGetter.getHeight(
-                                        multiplier: MultiplierConstant
-                                            .dMNotRelatedValueSeparation,
-                                      ),
-                                      children: [
-                                        Text(
-                                          tasks[index].title,
-                                          style: MyThemeTextStyle.titleMedium(),
-                                        ),
-                                        // if (controller
-                                        //             .tasks[index].description !=
-                                        //         null &&
-                                        //     controller.tasks[index].description!
-                                        //         .trim()
-                                        //         .isNotEmpty)
-                                        //   Text(
-                                        //     controller
-                                        //         .tasks[index].description!,
-                                        //     style: MyThemeTextStyle.bodyLarge(),
-                                        //     maxLines: 2,
-                                        //   ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  text:
-                                                      DateFormatter.formatDate(
-                                                    tasks[index].dueDate,
-                                                  ),
-                                                  children: tasks[index].status==ComparisonConstant.cPending?[
-                                                     const TextSpan(text: " \n("),
-                                                    getDayView(
-                                                      dueDate: tasks[index].dueDate,
-                                                      taskStatus: tasks[index].status,
-                                                    ),
-                                                    const TextSpan(text: ")"),
-                                                  ]:[],
-                                                ),
-                                                maxLines: 2,
-                                              ),
-                                            ),
-                                            getTaskStatusTextWidget(
-                                                taskStatus:tasks[index].status),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                                  );
+                                },
                               ),
-                            );
-                          },
-                          itemCount: tasks.length,
-                          shrinkWrap: true,
-                          separatorBuilder: (BuildContext context, int index) {
-                            return SizedBox(
-                              height: SizeGetter.getHeight(
-                                multiplier:
-                                    MultiplierConstant.dMRelatedValueSeparation,
-                              ),
-                            );
-                          },
-                        );
+                            ),
+                    ],
+                  );
                 },
               ),
             ),
