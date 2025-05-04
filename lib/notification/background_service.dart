@@ -23,15 +23,17 @@ Future<void> initializeBackgroundService() async {
   service.startService();
 }
 
-// Background Service Logic
+/// Background Service Logic
+@pragma('vm:entry-point')
 void onStart(ServiceInstance service) async {
   controllerService.initializeAllControllers();
-  Timer.periodic(const Duration(seconds: 120), (timer) async {
+  Timer.periodic(const Duration(seconds: 10), (timer) async {
+    print("-----------Background service called");
     DateTime now = DateTime.now();
     int currentHour = now.hour;
 
-    // Run only between 6 AM and 10 PM (22:00)
-    if (currentHour >= 6 && currentHour < 22) {
+    // Run only between 7 AM and 10 PM (24:00)
+    if (currentHour >= 7 && currentHour < 24) {
       await checkPendingTasks();
     } else {
       logger.d("Background service paused outside allowed hours.");
