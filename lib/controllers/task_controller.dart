@@ -23,6 +23,9 @@ class TaskController extends GetxController {
 
   Future<void> getAllTasks() async {
     tasks = await _taskRepository.getAllTasks();
+    pendingTasks.clear();
+    overDueTasks.clear();
+    completedTasks.clear();
     _sortTasks();
     _filterTasksByStatus();
     update();
@@ -79,9 +82,7 @@ class TaskController extends GetxController {
     logger.i("insertTask : $isInserted");
     if (isInserted) {
       tasks.add(newTask);
-      _sortTasks();
-      _filterTasksByStatus();
-      update();
+      await getAllTasks();
     }
     if (newTask.confirmed == "yes") {
       _insertTaskActionForSave(isInserted: isInserted);
@@ -98,7 +99,7 @@ class TaskController extends GetxController {
     bool isDeleted = await _taskRepository.deleteTask(taskId: taskId);
     logger.i("deleteTask : $isDeleted");
     if (isDeleted) {
-      getAllTasks();
+      await getAllTasks();
       showSnackBar(
         content: MessageWordConstant.mTaskDeletedMessage,
         snackBarEnum: SnackBarEnum.success,
@@ -119,8 +120,8 @@ class TaskController extends GetxController {
     bool isUpdated = await _taskRepository.updateTask(taskModel: taskModel,);
     logger.i("isUpdated : $isUpdated");
     if (isUpdated) {
-      NavigationService.pop();
       await getAllTasks();
+      NavigationService.pop();
       showSnackBar(
         content: MessageWordConstant.mTaskUpdatedMessage,
         snackBarEnum: SnackBarEnum.success,
